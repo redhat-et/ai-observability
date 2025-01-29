@@ -33,6 +33,9 @@ processors:
     spike_limit_percentage: 25
 
 exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8888" # <-this is so you can use curl to see all metrics like curl -s http://127.0.0.1:8888/metrics | grep gpu
+    namespace: "otelcol"
   otlphttp:
     endpoint: https://otlp-http-otlp-receiver-route-observability.apps.ocp-beta-test.nerc.mghpcc.org
     tls:
@@ -63,4 +66,4 @@ service:
     metrics:
       receivers: [prometheus,otlp]
       processors: [batch, memory_limiter]
-      exporters: [otlphttp, debug]
+      exporters: [otlphttp, prometheus, debug]
