@@ -49,7 +49,7 @@ See the [Containerfile](./vllm/Containerfile).
 By default, vLLM generates OTLP metrics.
 
 Update the [podman-cmd](./vllm/podman-cmd) to match your vLLM requirements. For this example, we have a llama3
-model downloaded. Follow these [notes](./vllm/notes) to download llama3 to use the podman-cmd as/is.
+model downloaded. Follow these [notes](./vllm/notes.md) to download llama3 to use the podman-cmd as/is.
 
 ```bash
 cd vllm
