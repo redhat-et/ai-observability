@@ -1,0 +1,8 @@
+# USE THIS ONE to send to OpenShift
+podman run --rm -d --name otelcol-host --network=host --user=0 \
+  -v $(pwd)/otc:/otc:Z \
+  -v /etc/opentelemetry-collector/certs/server.crt:/certs/server.crt:Z \
+  -v /etc/opentelemetry-collector/certs/server.key:/certs/server.key:Z \
+  -v /etc/opentelemetry-collector/certs/ca.crt:/certs/ca.crt:Z \
+  -v $(pwd)/otel-config.yaml:/etc/otelcol/config.yaml:Z \
+  quay.io/sallyom/rh-otel-collector:latest --config /etc/otelcol/config.yaml

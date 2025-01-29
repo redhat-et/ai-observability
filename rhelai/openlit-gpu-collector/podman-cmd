@@ -1,0 +1,6 @@
+podman run --rm -d --device nvidia.com/gpu=all --network=host --ipc=host --name gpu-collector \
+    -e GPU_APPLICATION_NAME='vllm' \
+    -e GPU_ENVIRONMENT='rhelai' \
+    -e OTEL_EXPORTER_OTLP_PROTOCOL='http/protobuf' \
+    -e OTEL_EXPORTER_OTLP_ENDPOINT='http://127.0.0.1:4318' \
+    ghcr.io/openlit/otel-gpu-collector:latest

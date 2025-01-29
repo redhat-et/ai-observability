@@ -1,0 +1,13 @@
+## Notes 
+
+**TODO** add anything relevant here
+
+### If exporting to OpenShift copy over mTLS certs
+
+mTLS certs issued for OCP copied to /etc/opentelemetry-collector/certs
+
+### Build the RH build of opentelemetry collector image
+
+git clone https://github.com/os-observability/redhat-opentelemetry-collector.git
+cd redhat-opentelemetry-collector
+podman build -t quay.io/sallyom/rh-otel-collector:latest .

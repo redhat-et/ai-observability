@@ -1,2 +1,4 @@
 # ai-observability
-demos and landing repo for observability work related to AI 
+Demos and landing place for observability work related to AI 
+
+* [RHEL AI Observability](./rhelai/README.md)
