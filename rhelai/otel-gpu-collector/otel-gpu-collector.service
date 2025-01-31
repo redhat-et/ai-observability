@@ -1,0 +1,39 @@
+[Unit]
+Description=Run GPU Collector and OTEL Collector containers
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+# Clean up containers if they exist
+ExecStartPre=-/usr/bin/podman stop gpu-collector
+ExecStartPre=-/usr/bin/podman rm gpu-collector
+ExecStartPre=-/usr/bin/podman stop otelcol-host
+ExecStartPre=-/usr/bin/podman rm otelcol-host
+
+# Start GPU Collector container
+ExecStart=/usr/bin/podman run --rm -d \
+    --device nvidia.com/gpu=all \
+    --network=host \
+    --ipc=host \
+    --name gpu-collector \
+    -e GPU_APPLICATION_NAME='rhelai' \
+    -e GPU_ENVIRONMENT='rhelai' \
+    -e OTEL_EXPORTER_OTLP_PROTOCOL='http/protobuf' \
+    -e OTEL_EXPORTER_OTLP_ENDPOINT='http://127.0.0.1:4318' \
+    ghcr.io/openlit/otel-gpu-collector:latest
+
+# Start OTEL Collector container
+ExecStart=/usr/bin/podman run --rm -d \
+    --name otelcol-host \
+    --network=host \
+    --user=0 \
+    -v /PATH/TO/otel-config.yaml:/etc/otelcol/config.yaml:Z \
+    quay.io/sallyom/rh-otel-collector:latest \
+      --config /etc/otelcol/config.yaml
+
+# Clean shutdown
+ExecStop=/usr/bin/podman stop gpu-collector
+ExecStop=/usr/bin/podman stop otelcol-host
