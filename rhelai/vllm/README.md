@@ -18,7 +18,17 @@ ramalama pull huggingface://bartowski/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3
 You should now have this on your filesystem:
 
 ```bash
-$ ls -al ~/.local/share/ramalama/models/huggingface/bartowski/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q5_K_M.gguf
+ls -al ~/.local/share/ramalama/models/huggingface/bartowski/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q5_K_M.gguf
 ```
 
-You can serve this model with vLLM
+You can serve this model with vLLM, with [this podman cmd](./podman-cmd), by running
+
+```bash
+./podman-cmd
+```
+
+View the logs with
+
+```bash
+podman logs vllm
+```

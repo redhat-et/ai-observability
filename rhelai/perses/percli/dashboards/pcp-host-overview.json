@@ -1,0 +1,368 @@
+{
+  "apiVersion": "perses.dev/v1alpha1",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "pcp-host-overview-extended",
+    "project": "rhelai"
+  },
+  "spec": {
+    "display": {
+      "name": "PCP Prometheus Host Overview - Extended"
+    },
+    "duration": "1h",
+    "refreshInterval": "0s",
+    "variables": [
+      {
+        "kind": "ListVariable",
+        "spec": {
+          "name": "host",
+          "defaultValue": "ip-172-31-26-14.ec2.internal",
+          "display": { "hidden": false },
+          "allowAllValue": false,
+          "allowMultiple": false,
+          "plugin": {
+            "kind": "PrometheusLabelValuesVariable",
+            "spec": {
+              "labelName": "hostname",
+              "matchers": []
+            }
+          }
+        }
+      }
+    ],
+    "panels": {
+      "load_average": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "Load Average" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": {
+                "mode": "table",
+                "position": "bottom",
+                "values": ["last-number", "max", "min"]
+              },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              },
+              "yAxis": {
+                "format": { "unit": "decimal", "decimalPlaces": 2 }
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_kernel_all_load{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "{{instname}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "memory_utilization": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "Memory Utilization" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": { "mode": "list", "position": "bottom", "values": [] },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1,
+                "stack": "all"
+              },
+              "yAxis": { "min": 0 }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_mem_util_free{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "{{__name__}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "runnable": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "Runnable" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              },
+              "yAxis": {
+                "format": { "unit": "decimal", "decimalPlaces": 0 },
+                "min": 0
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_kernel_all_runnable{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "{{__name__}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "agent_fenced": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "PMCD Agent Fenced" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": { "mode": "list", "position": "bottom", "values": [] },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_agent_fenced{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "{{instname}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "agent_status": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "PMCD Agent Status" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": { "mode": "list", "position": "bottom", "values": [] },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_agent_status{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "{{instname}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "buf_alloc_free": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "Buffer Allocation / Free" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": { "mode": "list", "position": "bottom", "values": [] },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_buf_alloc{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "Alloc ({{instname}})"
+                  }
+                }
+              }
+            },
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_buf_free{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "Free ({{instname}})"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "pdu_totals": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "PMCD PDUs In/Out" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": { "mode": "list", "position": "bottom", "values": [] },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_pdu_in_total{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "PDUs In"
+                  }
+                }
+              }
+            },
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_pdu_out_total{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "PDUs Out"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "open_fds": {
+        "kind": "Panel",
+        "spec": {
+          "display": { "name": "PMCD Open FDs" },
+          "plugin": {
+            "kind": "TimeSeriesChart",
+            "spec": {
+              "legend": { "mode": "list", "position": "bottom", "values": [] },
+              "visual": {
+                "areaOpacity": 0.1,
+                "connectNulls": false,
+                "display": "line",
+                "lineWidth": 1
+              },
+              "yAxis": {
+                "format": { "unit": "decimal" }
+              }
+            }
+          },
+          "queries": [
+            {
+              "kind": "TimeSeriesQuery",
+              "spec": {
+                "plugin": {
+                  "kind": "PrometheusTimeSeriesQuery",
+                  "spec": {
+                    "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
+                    "query": "rhelai_pmcd_openfds{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "seriesNameFormat": "{{instname}}"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "layouts": [
+      {
+        "kind": "Grid",
+        "spec": {
+          "display": { "title": "Overview", "collapse": { "open": true } },
+          "items": [
+            { "x": 0, "y": 0, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/load_average" } },
+            { "x": 12, "y": 0, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/memory_utilization" } },
+            { "x": 0, "y": 8, "width": 24, "height": 8, "content": { "$ref": "#/spec/panels/runnable" } }
+          ]
+        }
+      },
+      {
+        "kind": "Grid",
+        "spec": {
+          "display": { "title": "Additional PMCD Metrics", "collapse": { "open": true } },
+          "items": [
+            { "x": 0, "y": 0, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/agent_fenced" } },
+            { "x": 12, "y": 0, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/agent_status" } },
+            { "x": 0, "y": 8, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/buf_alloc_free" } },
+            { "x": 12, "y": 8, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/pdu_totals" } },
+            { "x": 0, "y": 16, "width": 12, "height": 8, "content": { "$ref": "#/spec/panels/open_fds" } }
+          ]
+        }
+      }
+    ]
+  }
+}
+

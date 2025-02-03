@@ -1,8 +1,5 @@
-# USE THIS ONE to collect and visualize on local system
-podman run --rm -d --name otelcol-host --network=host --user=0 \
-  -v $(pwd)/otc:/otc:Z \
-  -v $(pwd)/otel-config.yaml:/etc/otelcol/config.yaml:Z \
-  quay.io/sallyom/rh-otel-collector:latest --config /etc/otelcol/config.yaml
-
-# quay.io/sallyom/rh-otel-collector:latest built from RH observability repo
-
+podman run --rm --name otel-collector --network=host \
+  -v /home/cloud-user/sallyom-test/otc:/otc:Z \
+  -v /etc/opentelemetry-collector/certs:/certs:Z \
+  -v /home/cloud-user/sallyom-test/otel-collector/otel-config.yaml:/etc/otelcol/config.yaml:Z \
+  ghcr.io/os-observability/redhat-opentelemetry-collector/redhat-opentelemetry-collector:main --config file:/etc/otelcol/config.yaml

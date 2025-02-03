@@ -5,7 +5,7 @@ podman run --rm -d --name vllm \
   -e VLLM_LOGGING_LEVEL=DEBUG \
   -e OTEL_SERVICE_NAME="rhelai-vllm" \
   -e OTEL_EXPORTER_OTLP_TRACES_INSECURE=true \
-  -e "HUGGING_FACE_HUB_TOKEN=ADD HERE ONLY IF NECESSARY" \
-  -v /home/cloud-user/.cache/huggingface:/root/.cache/huggingface \
   -v /home/cloud-user/.local/share/ramalama:/ramalama \
   quay.io/sallyom/vllm:otlp --model /ramalama/models/huggingface/bartowski/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q5_K_M.gguf --served-model-name llama3 --tensor-parallel-size 2 --otlp-traces-endpoint 127.0.0.1:4317 --collect-detailed-traces all
+  
+# quay.io/sallyom/vllm:otlp is built from ./Containerfile  
