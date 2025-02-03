@@ -62,7 +62,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_kernel_all_load{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "kernel_all_load{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "{{instname}}"
                   }
                 }
@@ -97,7 +97,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_mem_util_free{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "mem_util_free{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "{{__name__}}"
                   }
                 }
@@ -133,7 +133,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_kernel_all_runnable{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "kernel_all_runnable{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "{{__name__}}"
                   }
                 }
@@ -166,7 +166,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_agent_fenced{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_agent_fenced{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "{{instname}}"
                   }
                 }
@@ -199,7 +199,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_agent_status{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_agent_status{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "{{instname}}"
                   }
                 }
@@ -232,7 +232,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_buf_alloc{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_buf_alloc{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "Alloc ({{instname}})"
                   }
                 }
@@ -245,7 +245,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_buf_free{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_buf_free{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "Free ({{instname}})"
                   }
                 }
@@ -278,7 +278,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_pdu_in_total{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_pdu_in_total{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "PDUs In"
                   }
                 }
@@ -291,7 +291,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_pdu_out_total{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_pdu_out_total{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "PDUs Out"
                   }
                 }
@@ -327,7 +327,7 @@
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
                     "datasource": { "kind": "PrometheusDatasource", "name": "Prometheus" },
-                    "query": "rhelai_pmcd_openfds{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
+                    "query": "pmcd_openfds{exported_job=\"pmproxy-rhel-ai\", exported_instance=\"0.0.0.0:44322\", hostname=\"$host\"}",
                     "seriesNameFormat": "{{instname}}"
                   }
                 }

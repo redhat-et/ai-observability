@@ -46,7 +46,7 @@
                 "plugin": {
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
-                    "query": "rhelai_gpu_utilization{gen_ai_environment=\"rhelai\"}",
+                    "query": "gpu_utilization{gen_ai_environment=\"rhelai\"}",
                     "seriesNameFormat": "GPU Util (%)"
                   }
                 }
@@ -84,7 +84,7 @@
                 "plugin": {
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
-                    "query": "rhelai_gpu_memory_free{gen_ai_environment=\"rhelai\"}",
+                    "query": "gpu_memory_free{gen_ai_environment=\"rhelai\"}",
                     "seriesNameFormat": "GPU Mem Free"
                   }
                 }
@@ -122,7 +122,7 @@
                 "plugin": {
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
-                    "query": "rhelai_vllm_gpu_cache_usage_perc",
+                    "query": "vllm_gpu_cache_usage_perc",
                     "seriesNameFormat": "Cache Usage (%)"
                   }
                 }
@@ -160,7 +160,7 @@
                 "plugin": {
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
-                    "query": "rhelai_gpu_temperature{gen_ai_environment=\"rhelai\"}",
+                    "query": "gpu_temperature{gen_ai_environment=\"rhelai\"}",
                     "seriesNameFormat": "GPU Temp (°C)"
                   }
                 }
@@ -198,7 +198,7 @@
                 "plugin": {
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
-                    "query": "rhelai_gpu_power_draw{gen_ai_environment=\"rhelai\"}",
+                    "query": "gpu_power_draw{gen_ai_environment=\"rhelai\"}",
                     "seriesNameFormat": "GPU Power (W)"
                   }
                 }
@@ -236,7 +236,7 @@
                 "plugin": {
                   "kind": "PrometheusTimeSeriesQuery",
                   "spec": {
-                    "query": "rhelai_gpu_fan_speed{gen_ai_environment=\"rhelai\"}",
+                    "query": "gpu_fan_speed{gen_ai_environment=\"rhelai\"}",
                     "seriesNameFormat": "Fan Speed"
                   }
                 }
