@@ -1,76 +1,46 @@
+## Performance Co-Pilot in RHEL AI
+
+The easiest way to get up and running with PCP is with the `pcp-zeroconf` package. To visualize system metrics and workload metrics,
+install `grafana` and `grafana-pcp` along with a `Valkey` in-memory, NoSQL key/value database.
+
+### Installation of PCP-zeroconf and grafana
+
+```bash
+sudo rpm-ostree install pcp-zeroconf
+sudo systemctl reboot
+```
+**TODO** maybe to start with we enable the pmcd, pmlogger, and pmproxy services so we don't have to install pcp-zeroconf? Then, work with RHELAI to
+include zeroconf in the base image.
+
 ## Start Performance Co-Pilot (PCP) Services
 
-RHEL AI includes PCP services. All that's required to use PCP is to start or enable the systemd services.
-For this you need to run as sudo user.
+Upon a reboot, PCP services should be running.
+All that's required to view system metrics in Grafana is to run `grafana` and `valkey` datastore  with the PCP `grafana-pcp` plugin.
 
 ```bash
-systemctl start pmcd
-systemctl start pmlogger
-systemctl start pmproxy
 
-# check to ensure the services are started
-systemctl status [service]
+# start Valkey
+./pcp/podman-cmd-valkey
+podman logs valkey
+
+# check that Valkey server is running and connected to pmproxy
+sudo pmseries -p 6379 disk.dev.read
+61261618638aa1189c1cc2220815b0cec8c66414
 ```
 
-See [PCP setup](./pcp/README.md) for more information. 
+## Configure PCP Dashboards in Grafana
 
-Metrics are scraped with a Prometheus receiver configured in an OpenTelemetry Collector (OTC)
-running in a podman container.
+Now the fun part: Enable the PCP plugin in grafana, at `http://ip-addr-local-host:3000`, then add PCP-Valkey Datastore and import the listed Valkey
+dashboards. You can also add the PCP-Vector Datastore to import its dashboards.
 
-## Run AI workload instrumented to generate OTLP data and/or Prometheus metrics
+## InstructLab in RHEL AI to serve LLMs
 
-For this, I've created a vLLM image that has the added opentelemetry packages to generate OTLP trace data.
-See the [Containerfile](./vllm/Containerfile).
-By default, vLLM generates OTLP metrics.
-
-Update the [podman-cmd](./vllm/podman-cmd) to match your vLLM requirements.
-model downloaded. Follow these [notes](./vllm/README.md) to download llama3 to use the podman-cmd as/is.
+The instructLab CLI is included in RHEL AI. This makes it easy to download and serve models. Here's how to serve `meta-llama/Llama-3.1-8B-Instruct`.
+Note this is a safetensors formatted LLM, rather than a GGUF.
 
 ```bash
-cd vllm
-./podman-cmd
-
-podman ps # should show a container vllm
-podman logs vllm
+ilab model download --repository meta-llama/Llama-3.1-8B-Instruct --hf-token XXXxxxxx
+ilab model serve --gpus=2 --backend=vllm --model-path=/var/home/cloud-user/.cache/instructlab/models/meta-llama/Llama-3.1-8B-Instruct 
 ```
 
-Generate traffic with vLLM by either using it in an application or with this [curl command](./vllm/curl-vllm)
-
-```bash
-./curl-vllm
-```
-
-## Telemetry Collector service
-
-OpenTelemetry collector and OpenLit GPU collector can be started together with [telemetry-collector.service](./telemetry-collector-service/README.md).
-This service runs the otel-collector and gpu-collector podman containers.
-
-## Telemetry Viewer service
-
-You can add an exporter in the opentelemetry configuration to export all telemetry to any observability backend.
-To view data locally, you can start the [telemetry-viewer.service](./telemetry-viewer-service/README.md).
-The `telemetry-viewer.service` will start local prometheus, tempo, and perses podman containers. Perses is a grafana-like
-visualization tool with a CLI for managing resources such as projects, datasources, dashboards. Many grafana dashboards can be migrated to perses.
-
-If you have a Dynatrace account, you can also export all telemetry to Dynatrace by uncommenting the `otlp/dynatrace` exporter in
-the example opentelemetry-collector configuration file.
-
-### TODO
-
-* create Global Tempo datasource & local Tempo backend for trace data
-
-* Create quadlets/systemd services/compose files for podman containers
-
-* Check all podman commands, remove unnecessary privileges
-
-
-### If exporting to external observability backend, example files for mTLS
-
-certs from OpenShift mTLS otel-collector
-
-```bash
-ls -al /etc/certs/opentelemetry-collector
-server.crt
-server.key
-ca.crt
-```
+## View vLLM metrics (TODO)

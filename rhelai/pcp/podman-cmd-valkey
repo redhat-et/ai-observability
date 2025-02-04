@@ -1,0 +1,1 @@
+podman run --rm -d --name valkey --network=host -e ALLOW_EMPTY_PASSWORD=yes -v $(pwd)/valkey:/data:Z valkey/valkey
