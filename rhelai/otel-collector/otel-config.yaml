@@ -3,10 +3,10 @@ receivers:
   prometheus:
     config:
       scrape_configs:
-      - job_name: 'pmproxy-rhel-ai'
-        scrape_interval: 5s
-        static_configs:
-          - targets: ['0.0.0.0:44322']
+      #- job_name: 'pmproxy-rhel-ai'
+      #  scrape_interval: 5s
+      #  static_configs:
+      #    - targets: ['0.0.0.0:44322']
       - job_name: 'vllm'
         scrape_interval: 5s
         static_configs:
@@ -24,13 +24,13 @@ receivers:
     priority: info
 
 processors:
-  filter:
-    error_mode: ignore
-    metrics:
-      datapoint:
-        # these pcp metrics were causing errors so removed them
-        - metric.name == "rhelai_mem_vmstat_pgscan_kswapd_total"
-        - metric.name == "rhelai_mem_vmstat_pgscan_direct_total"
+  #filter:
+  #  error_mode: ignore
+  #  metrics:
+  #    datapoint:
+  #      # these pcp metrics were causing errors so removed them
+  #      - metric.name == "rhelai_mem_vmstat_pgscan_kswapd_total"
+  #      - metric.name == "rhelai_mem_vmstat_pgscan_direct_total"
 
   cumulativetodelta:
   batch:
@@ -74,7 +74,6 @@ exporters:
 
   prometheus:
     endpoint: 0.0.0.0:8888
-    namespace: "rhelai"
 
   debug:
     verbosity: basic
@@ -92,5 +91,5 @@ service:
       exporters: [debug]
     metrics:
       receivers: [otlp, prometheus]
-      processors: [batch, filter, cumulativetodelta, memory_limiter]
+      processors: [batch, cumulativetodelta, memory_limiter]
       exporters: [prometheus, debug]

@@ -26,11 +26,11 @@ ExecStart=/usr/bin/podman run --rm -d \
     ghcr.io/openlit/otel-gpu-collector:latest
 
 # Start OTEL Collector container
+# Update /LOCAL/PATH/TO
 ExecStart=/usr/bin/podman run --rm -d \
     --name otel-collector \
     --network=host \
     --user=0 \
-    -v /LOCAL/PATH/TO/otc:/otc:Z \
     -v /LOCAL/PATH/TO/otel-config.yaml:/etc/otelcol/config.yaml:Z \
     ghcr.io/os-observability/redhat-opentelemetry-collector/redhat-opentelemetry-collector:main \
       --config /etc/otelcol/config.yaml

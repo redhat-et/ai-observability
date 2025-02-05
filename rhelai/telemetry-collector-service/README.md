@@ -3,13 +3,10 @@
 OpenLit GPU Collector gathers GPU utilization data from AMD or NVIDIA GPUs. The OpenTelemetry Collector creates a unified way to collect 
 metrics, logs, and traces from the system and can then export them to various observability backends.
 
-Edit the default collector [configuration file](./otel-config.yaml) as necessary.
-Notice it assumes vLLM is running and generating metrics at `0.0.0.0:8000/metrics`. Add any local workloads for which to collect prometheus metrics.
-Update the `/LOCAL/PATH/TO` references.
+* Edit the default collector [configuration file](./otel-config.yaml) as necessary.
+* Update `/LOCAL/PATH/TO` in line #34 of [unit file](./telemetry-collector.service) to the absolute path to the `otel-config.yaml` 
 
-```bash
-mkdir /LOCAL/PATH/TO/otc # for file-storage extension, if configured
-```
+Notice it assumes vLLM is running and generating metrics at `0.0.0.0:8000/metrics`. Add any local workloads for which to collect prometheus metrics.
 
 ```bash
 cp ./telemetry-collector.service /etc/systemd/system/telemetry-collector.service
@@ -26,11 +23,15 @@ fc9425a642b8  quay.io/sallyom/rh-otel-collector:latest   --config /etc/ote...  3
 systemctl stop telemetry-collector
 ```
 
-You should see all metrics (vLLM, GPU, PCP) with
+You should now see vLLM and GPU metrics with
 
 ```bash
 curl http://localhost:8888/metrics
 ```
 
-Now, you can export to any observability backend. To run a local observability backend with prometheus, tempo, and perses,
-start [telemetry-viewer service](../telemetry-viewer/README.md).
+Now, you can export to any observability backend.
+If Grafana is already running with the PCP plugin, additional Datasources can be configured (Tempo or Jaeger tracing backends).
+
+
+**NOTE** You can simply run the 2 containers with their `podman run` commands outlined in the [unit file](./telemetry-collector.service). You don't
+need to run them together as a systemd service. 

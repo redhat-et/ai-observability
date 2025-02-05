@@ -1,0 +1,18 @@
+[Unit]
+Description=Start Valkey container
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStart=/usr/bin/podman run --rm -d --name valkey \
+  --network=host \
+  -e ALLOW_EMPTY_PASSWORD=yes \
+  --security-opt label=disable \
+  -v valkey-data:/data:Z \
+  valkey/valkey
+
+[Install]
+WantedBy=default.target
