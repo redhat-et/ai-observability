@@ -1,29 +1,37 @@
-## Serve LLMs with vLLM & InstructLab
+# Serve `meta-llama/Llama-3.1-8B-Instruct` with vLLM
 
-The instructLab CLI is included in RHEL AI. This makes it easy to download and serve models. Here's how to serve `meta-llama/Llama-3.2-8B-Instruct`.
-Note this is a safetensors formatted LLM, rather than a GGUF. This model is ~16G. You'll need a Huggingface API Token for most models.
+## Run vLLM with Podman (x86_64 only)
+
+You can serve `meta-llama/Llama-3.1-8B-Instruct` with a vLLM podman container with [this podman cmd](./no-otel-podman-cmd), by running
 
 ```bash
-ilab model download --repository meta-llama/Llama-3.2-8B-Instruct --hf-token XXXxxxxx
-ilab model serve --gpus=2 --backend=vllm --model-path=/var/home/cloud-user/.cache/instructlab/models/meta-llama/Llama-3.2-8B-Instruct 
+./podman-cmd-no-otel
+
+# vllm container will run in the background, to view logs run
+podman logs vllm
+
+# to view log stream
+podman logs -f vllm
 ```
 
-## vLLM with OTLP Tracing
+## Run vLLM with OTLP Tracing
 
 To enable trace generation in vLLM, the packages listed in this [Containerfile](./Containerfile) are required. `quay.io/sallyom/vllm:otlp` was built
 with this Containerfile.
 
-You can serve a Llama3 model with a vLLM podman container with tracing enabled, with [this podman cmd](./podman-cmd), by running
+You can serve `meta-llama/Llama-3.1-8B-Instruct` with a vLLM podman container with tracing enabled, with [this podman cmd](./podman-cmd), by running
 
 ```bash
 ./podman-cmd
-```
 
-View the logs with
-
-```bash
+# vllm container will run in the background, to view logs run
 podman logs vllm
+
+# to view log stream
+podman logs -f vllm
 ```
+
+## Monitoring vLLM
 
 ### View vLLM metrics
 
@@ -31,8 +39,18 @@ podman logs vllm
 curl http://localhost:8000/metrics
 ```
 
+If opentelemetry-collector is running with a metrics backend and exporting to a visualization backend such as Grafana, you can explore the metrics
+there. 
+
 ### View vLLM traces
 
-If opentelemetry-collector is running, you can view the traces in the logs by setting `verbosity: detailed` in the collector configuration.
+If opentelemetry-collector is running with a tracing backend and exporting to a visualization backend, you can view the traces there.
+
+You can see the traces in the collector logs by setting `verbosity: detailed` in the collector configuration.
 
 **TODO: View with Tempo** 
+
+## Download and Serve with Instructlab
+
+If not running Llamastack and you only care about serving vLLM, you can use RHEL AI's out-of-the-box `ilab` CLI
+See [here](./ilab-serve.md)
