@@ -86,11 +86,11 @@ workloads. The Grafana server installed above can be used to visualize all telem
 to an external observability stack such as on OpenShift, or to an observability vendor such as Dynatrace, is also an option.
 Here the various choices for building out a more complete observability solution are outlined.
 
-### Add Workload Metrics to PCP, Visualize in Local Grafana
+### Add workload metrics endpoints to PCP, visualize in local Grafana
 
 TODO
 
-### OpenTelemetry Collector to unify all local workloads metrics into a single prometheus stream to be injested by PCP
+### OpenTelemetry Collector to unify all local workload metrics into a single prometheus stream to be injested by PCP, and add a tracing exporter.
 
 TODO
 
@@ -98,11 +98,11 @@ TODO
 
 TODO
 
-#### Export Telemetry to OpenShift
+#### Export all telemetry to OpenShift
 
 TODO
 
-#### Export Telemetry to Dynatrace (or any other observability vendor)
+#### Export telemetry to Dynatrace (or any other observability vendor)
 
 TODO
 
