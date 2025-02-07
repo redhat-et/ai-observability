@@ -1,13 +1,26 @@
-podman run --rm -d --name vllm \
-  --network=host --ipc=host \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -e VLLM_LOGGING_LEVEL=DEBUG \
-  -e OTEL_SERVICE_NAME="rhelai-vllm" \
-  -e OTEL_EXPORTER_OTLP_TRACES_INSECURE=true \
-  -v /home/cloud-user/.local/share/ramalama:/ramalama \
-  quay.io/sallyom/vllm:otlp \
-    --model /var/home/cloud-user/.cache/instructlab/models/meta-llama/Llama-3.1-8B-Instruct \
-    --served-model-name llama3 --tensor-parallel-size 2 --otlp-traces-endpoint 127.0.0.1:4317 --collect-detailed-traces all
-  
+# NOTES: Run this, then, cd ~/llama-stack/distrubutions/remote-vllm && 
+# https://llama-stack.readthedocs.io/en/latest/distributions/self_hosted_distro/remote-vllm.html
+
+
+export INFERENCE_PORT=8000
+export INFERENCE_MODEL=meta-llama/Llama-3.1-8B-Instruct
+#export INFERENCE_MODEL=meta-llama/Llama-3.1-3B-Instruct
+HF_TOKEN=xxxxxxxxx
+
+podman run --rm -d \
+    --name vllm \
+    --device nvidia.com/gpu=all \
+    -v /home/cloud-user/.cache/huggingface:/root/.cache/huggingface \
+    --env "HUGGING_FACE_HUB_TOKEN=$HF_TOKEN" \
+    -p $INFERENCE_PORT:$INFERENCE_PORT \
+    --network=host \
+    -e VLLM_LOGGING_LEVEL=DEBUG \
+    -e OTEL_SERVICE_NAME="rhelai-vllm" \
+    -e OTEL_EXPORTER_OTLP_TRACES_INSECURE=true \
+    quay.io/sallyom/vllm:otlp \
+    --model $INFERENCE_MODEL \
+    --otlp-traces-endpoint 127.0.0.1:4317 \
+    --collect-detailed-traces all \
+    --port $INFERENCE_PORT
+
 # quay.io/sallyom/vllm:otlp is built from ./Containerfile  
