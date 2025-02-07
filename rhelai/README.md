@@ -26,7 +26,7 @@ management of the PCP services and ensures they remain connected. Most likely, `
 
 ### Start Valkey and Grafana
 
-All that's required to view system metrics in Grafana is to run `Valkey` and `Grafana`.
+All that's required to view system metrics in RHEL AI is to run `Valkey` and `Grafana`.
 To keep the number of packages required to install minimal, Valkey and Grafana run with podman managed by systemd.
 In future releases of RHEL AI, Valkey & Grafana rpms could be added to the base OS image. This would avoid needing place the below systemd unit files. 
 View the [valkey unit file](./valkey-service/valkey.service) and the [grafana unit file](./grafana-service/grafana.service)
@@ -90,7 +90,7 @@ Here the various choices for building out a more complete observability solution
 
 TODO
 
-### OpenTelemetry Collector to unify all local workloads metrics into a single prometheus stream to be injected by PCP
+### OpenTelemetry Collector to unify all local workloads metrics into a single prometheus stream to be injested by PCP
 
 TODO
 
