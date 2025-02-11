@@ -1,0 +1,18 @@
+# Add this exporter to the opentelemetry-collector configuration
+
+exporters:
+  otlp/tempo:
+    endpoint: 0.0.0.0:4377
+    tls:
+      insecure: true
+
+# Then add otlp/tempo to the traces exporters in the pipelines section, similar to below
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [debug, otlp/tempo]
+
+# Then systemctl restart telemetry-collector

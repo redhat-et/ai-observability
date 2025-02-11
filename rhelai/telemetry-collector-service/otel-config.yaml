@@ -39,7 +39,7 @@ exporters:
   #    ca_file: /certs/ca.crt
 
   prometheus:
-    endpoint: 0.0.0.0:8888 #<-with this you can `curl localhost:8888/metrics` to see all metrics
+    endpoint: 0.0.0.0:7777 #<-with this you can `curl localhost:7777/metrics` to see all metrics
 
   debug:
     verbosity: basic  #<-switch to 'detailed' to see metrics in otel-collector logs

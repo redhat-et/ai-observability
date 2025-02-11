@@ -1,6 +1,27 @@
-# Serve `meta-llama/Llama-3.1-8B-Instruct` with vLLM
+# Serve `meta-llama/Llama-3.1-8B-Instruct` with vLLM (x86_64 only)
 
-## Run vLLM with Podman (x86_64 only)
+All commands are assumed to run as root user and haven't been tested as non-root.
+
+## Run vLLM as a Systemd Service
+
+```bash
+# Edit ./vllm-env to match requirements and provide Huggingface Token
+mkdir /etc/vllm && cp ./vllm-env /etc/vllm/defaults
+cp ./vllm.service /etc/systemd/system/vllm.service
+systemctl daemon-reload
+systemctl start vllm
+
+# To start vLLM container when system boots
+systemctl enable vllm
+
+# vLLM container should now be running
+podman logs -f vllm
+
+# Check that the model is loaded with
+curl http://localhost:8000/v1/models
+```
+
+## Run vLLM with Podman
 
 You can serve `meta-llama/Llama-3.1-8B-Instruct` with a vLLM podman container with [this podman cmd](./no-otel-podman-cmd), by running
 
@@ -48,7 +69,7 @@ If opentelemetry-collector is running with a tracing backend and exporting to a 
 
 You can see the traces in the collector logs by setting `verbosity: detailed` in the collector configuration.
 
-**TODO: View with Tempo** 
+Follow the [Tempo example](../tempo/README.md) to add a local `Tempo` tracing backend and `Tempo Datasource` to Grafana.
 
 ## Download and Serve with Instructlab
 

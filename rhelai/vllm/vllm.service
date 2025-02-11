@@ -1,0 +1,30 @@
+[Unit]
+Description=VLLM Podman Container Service
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+EnvironmentFile=/etc/vllm/defaults
+
+ExecStart=/usr/bin/podman run --rm -d \
+  --name vllm \
+  --device nvidia.com/gpu=all \
+  -v /home/cloud-user/.cache/huggingface:/root/.cache/huggingface \
+  --env "HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}" \
+  -p ${INFERENCE_PORT}:${INFERENCE_PORT} \
+  --network=host \
+  -e VLLM_LOGGING_LEVEL=DEBUG \
+  -e OTEL_SERVICE_NAME="llamastack-vllm" \
+  -e OTEL_EXPORTER_OTLP_TRACES_INSECURE=true \
+  quay.io/sallyom/vllm:otlp \
+  --model ${INFERENCE_MODEL} \
+  --otlp-traces-endpoint 127.0.0.1:4317 \
+  --collect-detailed-traces all \
+  --port ${INFERENCE_PORT}
+
+ExecStop=/usr/bin/podman stop vllm
+
+[Install]
+WantedBy=multi-user.target

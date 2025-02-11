@@ -1,0 +1,23 @@
+[Unit]
+Description=Grafana Tempo Container
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+# Start the Tempo container
+ExecStart=/usr/bin/podman run --rm -d \
+  --user 10001 \
+  --name tempo \
+  --network=host \
+  -v /etc/tempo/tempo.yaml:/etc/tempo.yaml:Z,ro \
+  -v tempo-data:/var/tempo \
+  grafana/tempo:latest \
+  -config.file=/etc/tempo.yaml
+
+# Stop the Tempo container gracefully
+ExecStop=/usr/bin/podman stop tempo
+
+[Install]
+WantedBy=multi-user.target

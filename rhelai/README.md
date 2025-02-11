@@ -36,15 +36,15 @@ The `grafana-pcp` grafana plugin installed above includes PCP Datasources and ma
 
 #### Start valkey and restart pmproxy service
 
-Valkey will be started as a user-level systemd service.
+Valkey container will be started as a systemd service.
 
 ```bash
-mkdir -p ~/.config/systemd/user && cp ./valkey-service/valkey.service ~/.config/systemd/user/valkey.service
-systemctl --user daemon-reload
+cp ./valkey-service/valkey.service /etc/systemd/system/valkey.service
+systemctl daemon-reload
 systemctl --enable valkey.service --now
 
 # check that valkey is up and running and ready to connect with pmproxy
-systemctl --user status valkey
+systemctl status valkey
 podman logs valkey
 podman volume inspect valkey-data #<-podman volume with valkey data will persist service restarts
 
@@ -52,21 +52,21 @@ podman volume inspect valkey-data #<-podman volume with valkey data will persist
 sudo systemctl restart pmproxy
 
 # check that pmproxy and valkey are connected by receiving a non-empty response to the below command.
-sudo pmseries -p 6379 disk.dev.read
+pmseries -p 6379 disk.dev.read
 61261618638aa1189c1cc2220815b0cec8c66414
 ```
 
 #### Start Grafana 
 
-Grafana will be started as a user-level systemd service.
+Grafana will be started as a systemd service.
 
 ```bash
-cp ./grafana-service/grafana.service ~/.config/systemd/user/grafana.service
-systemctl --user daemon-reload
-systemctl --user --enable grafana.service --now
+cp ./grafana-service/grafana.service /etc/systemd/system/grafana.service
+systemctl daemon-reload
+systemctl --enable grafana.service --now
 
 # check that grafana is running
-systemctl --user status grafana
+systemctl status grafana
 podman logs grafana
 podman volume inspect grafana-data #<-podman volume with grafana-data will persist service restarts
 ```

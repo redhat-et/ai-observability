@@ -2,9 +2,9 @@
 # https://llama-stack.readthedocs.io/en/latest/distributions/self_hosted_distro/remote-vllm.html
 
 
+# vLLM will download the INFERENCE_MODEL if it doesn't exist in ~/.cache/huggingface
 export INFERENCE_PORT=8000
 export INFERENCE_MODEL=meta-llama/Llama-3.1-8B-Instruct
-#export INFERENCE_MODEL=meta-llama/Llama-3.1-3B-Instruct
 HF_TOKEN=xxxxxxxxx
 
 podman run --rm -d \
@@ -23,4 +23,4 @@ podman run --rm -d \
     --collect-detailed-traces all \
     --port $INFERENCE_PORT
 
-# quay.io/sallyom/vllm:otlp is built from ./Containerfile  
+# quay.io/sallyom/vllm:otlp is built from ./Containerfile

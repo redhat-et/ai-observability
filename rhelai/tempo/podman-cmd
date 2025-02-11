@@ -1,0 +1,5 @@
+podman run --rm -d --user 10001 --name tempo \
+  --network=host \
+  -v $(pwd)/tempo.yaml:/etc/tempo.yaml:Z,ro \
+  -v tempo-data:/var/tempo \
+  grafana/tempo:latest  -config.file=/etc/tempo.yaml
