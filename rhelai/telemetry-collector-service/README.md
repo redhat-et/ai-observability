@@ -26,7 +26,7 @@ systemctl stop telemetry-collector
 You should now see vLLM and GPU metrics with
 
 ```bash
-curl http://localhost:8888/metrics
+curl http://localhost:7777/metrics
 ```
 
 Now, you can export to any observability backend.

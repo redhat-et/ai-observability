@@ -1,11 +1,12 @@
-## Performance Co-Pilot (PCP) in RHEL AI
+# Telemetry Collection in RHEL AI
+
+## Performance Co-Pilot (PCP)
 
 PCP is a suite of tools, services, and libraries for monitoring, visualizing, storing, and analyzing system-level performance measurements.
 PCP is the standard monitoring tool for RHEL systems, and as such is included in RHEL AI.
 
-The easiest way to get up and running with PCP is with the `pcp-zeroconf` package. To visualize system metrics and workload metrics,
-install `grafana` and `grafana-pcp` along with a `Valkey` in-memory, NoSQL key/value database. Also, `pcp-pmda-openmetrics` allows for
-PCP to ingest prometheus and/or OTLP workload metrics.
+The easiest way to get up and running with PCP is with the `pcp-zeroconf` package. In addition, `pcp-pmda-openmetrics` plugin allows for
+ingesting any prometheus or OTLP metrics with PCP & Valkey as a backend. `Valkey` is an in-memory, NoSQL key/value database.
 
 ### Install PCP-zeroconf and ensure PCP services are started
 
@@ -22,19 +23,35 @@ Upon a reboot, PCP services `pmcd`, `pmlogger`, and `pmproxy` should be running.
 
 **NOTE** The pmcd, pmlogger, and pmproxy services and rpms are installed in the RHEL AI base image. It is possible to start these 3 systemd service
 to avoid installing `pcp-zeroconf`.  In future releases, `pcp-zeroconf` package will be included in the base OS image. It simplifies the
-management of the PCP services and ensures they remain connected. Most likely, `pcp-pmda-openmetrics` will also be included in the base OS image. 
+management of the PCP services and ensures they remain connected. `pcp-pmda-openmetrics` will also be included in the base OS image. 
 
-### Start Valkey and Grafana
+## OpenTelemetry Collector and OpenLit GPU Collector
 
-All that's required to view system metrics in RHEL AI is to run `Valkey` and `Grafana`.
+OpenLit GPU Collector gathers GPU utilization data from AMD or NVIDIA GPUs. The OpenTelemetry Collector creates a unified way to collect 
+metrics, logs, and traces and can then export them to various observability backends.
+
+This [telemetry-collector](./telemetry-collector-service/README.md) will run opentelemetry-collector and openlit-gpu-collector podman containers
+managed by systemd.
+
+
+PCP, OpenTelemetry Collector, and OpenLit GPU Collector together provide a complete solution in RHEL AI for collecting system metrics and
+all workload metrics, logs, and traces.
+
+# Telemetry Visualization in RHEL AI
+
+All that's required to view metrics in RHEL AI is `Grafana` with `PCP DataSource Plugins` and a `Valkey Datastore`.
+
+## Start Valkey and Grafana
+
 To keep the number of packages required to install minimal, Valkey and Grafana run with podman managed by systemd.
 In future releases of RHEL AI, Valkey & Grafana rpms could be added to the base OS image. This would avoid needing place the below systemd unit files. 
+
 View the [valkey unit file](./valkey-service/valkey.service) and the [grafana unit file](./grafana-service/grafana.service)
 to view the podman commands. Enabling these systemd services ensures that valkey and grafana containers will start when the system boots up.
 
-The `grafana-pcp` grafana plugin installed above includes PCP Datasources and many preconfigured Grafana Dashboards for visualizing data.
+The grafana plugins included with the podman command include PCP Datasources and many preconfigured Grafana Dashboards for visualizing metrics.
 
-#### Start valkey and restart pmproxy service
+### Valkey and pmproxy services
 
 Valkey container will be started as a systemd service.
 
@@ -56,7 +73,7 @@ pmseries -p 6379 disk.dev.read
 61261618638aa1189c1cc2220815b0cec8c66414
 ```
 
-#### Start Grafana 
+### Grafana service
 
 Grafana will be started as a systemd service.
 
@@ -78,29 +95,6 @@ After the PCP plugin is added, use the `Add new Datasource` button to search for
 Add the PCP-Valkey Datasourse and and from there, import the listed Valkey
 dashboards. Similarly, the PCP-Vector Datasource can be added and its dashboards imported.
 
-## AI Workload monitoring
 
-PCP is designed to monitor the host system performance metrics. The PMDA `openmetrics` plugin installed above allows PCP to ingest workload
-(prometheus and/or OTLP) metrics as well. The `Red Hat Build of OpenTelemetry Collector` can also be deployed to collect metrics, logs, and traces from all
-workloads. The Grafana server installed above can be used to visualize all telemetry locally. However, depending on your requirements, exporting data
-to an external observability stack such as on OpenShift, or to an observability vendor such as Dynatrace, is also an option.
-Here the various choices for building out a more complete observability solution are outlined.
-
-* [Add workload metrics to PCP, visualize in local Grafana](./rhelai/workload-monitoring/pcp-pmda-openmetrics.md)
-
-### OpenTelemetry Collector to unify all local workload metrics into a single prometheus stream to be injested by PCP, and add a tracing exporter.
-
-TODO
-
-### OpenTelemetry Collector to unify collection of all telemetry (metrics, logs, and traces) and export to external observability stack
-
-TODO
-
-#### Export all telemetry to OpenShift
-
-TODO
-
-#### Export telemetry to Dynatrace (or any other observability vendor)
-
-TODO
-
+See [AI Workload Monitoring](./workload-monitoring.md) to extend PCP & OpenTelemetry Collector to collect and visualize _all_ workload telemetry,
+and also for examples on how to export telemetry to an external observability stack or vendor.

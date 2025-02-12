@@ -1,0 +1,7 @@
+podman run --rm -d --name valkey \
+  --network=host \
+  -e ALLOW_EMPTY_PASSWORD=yes \
+  --security-opt label=disable \
+  -v valkey-data:/data:Z \
+  valkey/valkey
+
