@@ -2,15 +2,18 @@
 # https://llama-stack.readthedocs.io/en/latest/distributions/self_hosted_distro/remote-vllm.html
 
 
-# vLLM will download the INFERENCE_MODEL if it doesn't exist in ~/.cache/huggingface
+# tool_chat_template_llama3.1_json.jinja can be downloaded from:
+# https://github.com/vllm-project/vllm/blob/main/examples/tool_chat_template_llama3.1_json.jinja
+
 export INFERENCE_PORT=8000
 export INFERENCE_MODEL=meta-llama/Llama-3.1-8B-Instruct
-HF_TOKEN=xxxxxxxxx
+HF_TOKEN=XXxxxxxxxxx
 
 podman run --rm -d \
     --name vllm \
     --device nvidia.com/gpu=all \
-    -v /home/cloud-user/.cache/huggingface:/root/.cache/huggingface \
+    -v $HOME/.cache/huggingface:/root/.cache/huggingface \
+    -v $(pwd)/tool_chat_template_llama3.1_json.jinja:/root/tool_chat_template_llama3.1_json.jinja \
     --env "HUGGING_FACE_HUB_TOKEN=$HF_TOKEN" \
     -p $INFERENCE_PORT:$INFERENCE_PORT \
     --network=host \
@@ -21,6 +24,9 @@ podman run --rm -d \
     --model $INFERENCE_MODEL \
     --otlp-traces-endpoint 127.0.0.1:4317 \
     --collect-detailed-traces all \
+    --enable-auto-tool-choice \
+    --tool-call-parser llama3_json \
+    --chat-template /root/tool_chat_template_llama3.1_json.jinja \
     --port $INFERENCE_PORT
 
-# quay.io/sallyom/vllm:otlp is built from ./Containerfile
+# quay.io/sallyom/vllm:otlp is built from ./Containerfile  
