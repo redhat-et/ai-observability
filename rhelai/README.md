@@ -1,3 +1,5 @@
+![Overview](../images/rhel-ai-obs-image.png)
+
 # Telemetry Collection in RHEL AI
 
 ## Performance Co-Pilot (PCP)
