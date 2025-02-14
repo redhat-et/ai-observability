@@ -7,8 +7,11 @@ Wants=network-online.target
 Type=oneshot
 RemainAfterExit=yes
 
+ExecStartPre=-/usr/bin/podman rm -f valkey
+
 ExecStart=/usr/bin/podman run --rm -d --name valkey \
   --network=host \
+  --security-opt label=disable \
   -e ALLOW_EMPTY_PASSWORD=yes \
   --security-opt label=disable \
   -v valkey-data:/data:Z \

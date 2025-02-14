@@ -9,15 +9,15 @@ RemainAfterExit=yes
 
 # Clean up containers if they exist
 ExecStartPre=-/usr/bin/podman stop gpu-collector
-ExecStartPre=-/usr/bin/podman rm gpu-collector
+ExecStartPre=-/usr/bin/podman rm -f gpu-collector
 ExecStartPre=-/usr/bin/podman stop otel-collector
-ExecStartPre=-/usr/bin/podman rm otel-collector
+ExecStartPre=-/usr/bin/podman rm -f otel-collector
 
 # Start GPU Collector container
 ExecStart=/usr/bin/podman run --rm -d \
     --device nvidia.com/gpu=all \
     --network=host \
-    --ipc=host \
+    --security-opt label=disable \
     --name gpu-collector \
     -e GPU_APPLICATION_NAME='vllm' \
     -e GPU_ENVIRONMENT='rhelai' \

@@ -7,6 +7,8 @@ Wants=network-online.target
 Type=oneshot
 RemainAfterExit=yes
 
+ExecStartPre=-/usr/bin/podman rm -f grafana
+
 ExecStart=/usr/bin/podman run --rm -d --name grafana \
   --network=host  \
   --security-opt label=disable \

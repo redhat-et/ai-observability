@@ -6,11 +6,14 @@ After=network.target
 Type=oneshot
 RemainAfterExit=yes
 
+ExecStartPre=-/usr/bin/podman rm -f vllm
+
 EnvironmentFile=/etc/vllm/defaults
 
 ExecStart=/usr/bin/podman run --rm -d \
   --name vllm \
   --device nvidia.com/gpu=all \
+  --security-opt label=disable \
   -v /home/cloud-user/.cache/huggingface:/root/.cache/huggingface \
   -v /etc/vllm/tool_chat_template_llama3.1_json.jinja:/root/tool_chat_template_llama3.1_json.jinja:Z \
   --env "HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}" \

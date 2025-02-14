@@ -6,8 +6,11 @@ After=network.target
 Type=oneshot
 RemainAfterExit=yes
 
+ExecStartPre=-/usr/bin/podman rm -f tempo
+
 # Start the Tempo container
 ExecStart=/usr/bin/podman run --rm -d \
+  --security-opt label=disable \
   --user 10001 \
   --name tempo \
   --network=host \
