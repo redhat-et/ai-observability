@@ -13,8 +13,8 @@ Demos and landing place for observability work related to AI
   * [ilab model download; ilab model serve](./rhelai/vllm/README.md#instructlab-cli-to-serve-llms-with-vllm)
 
 * RHEL AI Workload Monitoring
-  * [OpenTelemetry Collector](./rhelai/README-otel-collector.md)
-  * [OpenLit GPU Collector](./rhelai/README-otel-collector.md)
-  * [Tempo Tracing Backend and Grafana Datasource](./rhelai/tempo/README.md)
+  * [OpenTelemetry Collector](./rhelai/telemetry-collection/README.md)
+  * [OpenLit GPU Collector](./rhelai/telemetry-collection/README.md)
+  * [Tempo Tracing Backend and Grafana Datasource](./rhelai/tempo-service/README.md)
   * [PCP OpenMetrics Plugin](./rhelai/workload-monitoring/pcp-pmda-openmetrics.md)
 

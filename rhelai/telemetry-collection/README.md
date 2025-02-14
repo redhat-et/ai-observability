@@ -35,3 +35,4 @@ If Grafana is already running with the PCP plugin, additional Datasources can be
 
 **NOTE** You can simply run the 2 containers with their `podman run` commands outlined in the [unit file](./telemetry-collector.service). You don't
 need to run them together as a systemd service. 
+

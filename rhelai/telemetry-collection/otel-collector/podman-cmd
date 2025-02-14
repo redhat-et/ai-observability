@@ -1,5 +1,4 @@
 podman run --rm --name otel-collector --network=host \
-  -v /home/cloud-user/sallyom-test/otc:/otc:Z \
   -v /etc/opentelemetry-collector/certs:/certs:Z \
   -v /home/cloud-user/sallyom-test/otel-collector/otel-config.yaml:/etc/otelcol/config.yaml:Z \
   ghcr.io/os-observability/redhat-opentelemetry-collector/redhat-opentelemetry-collector:main --config file:/etc/otelcol/config.yaml

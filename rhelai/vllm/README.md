@@ -71,7 +71,7 @@ If opentelemetry-collector is running with a tracing backend and exporting to a 
 
 You can see the traces in the collector logs by setting `verbosity: detailed` in the collector configuration.
 
-Follow the [Tempo example](../tempo/README.md) to add a local `Tempo` tracing backend and `Tempo Datasource` to Grafana.
+Follow the [Tempo example](../tempo-service/README.md) to add a local `Tempo` tracing backend and `Tempo Datasource` to Grafana.
 
 ## Download and Serve with Instructlab
 

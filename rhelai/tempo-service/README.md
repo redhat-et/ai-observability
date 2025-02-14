@@ -34,7 +34,7 @@ podman volume inspect tempo-data
 
 ## Add Tempo exporter to OpenTelemetry-Collector
 
-If you don't have an opentelemetry-collector service running, see the [telemetry-collector-service example](../telemetry-collector-service/README.md).
+If you don't have an opentelemetry-collector service running, see the [telemetry-collector-service example](../telemetry-collection/README.md).
 Modify the opentelemetry-collector configuration file to add a tempo exporter. 
 View the [example exporter snippet](./otel-collector-exporter.yaml).
 Then, restart the opentelemetry-collector container or telemetry-collector systemd service.
