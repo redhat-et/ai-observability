@@ -13,9 +13,8 @@ ExecStart=/usr/bin/podman run --rm -d --name valkey \
   --network=host \
   --security-opt label=disable \
   -e ALLOW_EMPTY_PASSWORD=yes \
-  --security-opt label=disable \
   -v valkey-data:/data:Z \
-  valkey/valkey
+  docker.io/valkey/valkey:latest
 
 [Install]
 WantedBy=default.target

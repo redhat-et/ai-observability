@@ -7,13 +7,13 @@
 PCP is a suite of tools, services, and libraries for monitoring, visualizing, storing, and analyzing system-level performance measurements.
 PCP is the standard monitoring tool for RHEL systems, and as such is included in RHEL AI.
 
-The easiest way to get up and running with PCP is with the `pcp-zeroconf` package. In addition, `pcp-pmda-openmetrics` plugin allows for
+The easiest way to get up and running with PCP is with the `pcp-zeroconf` package. It includes the `pcp-pmda-openmetrics` plugin that allows for
 ingesting any prometheus or OTLP metrics with PCP & Valkey as a backend. `Valkey` is an in-memory, NoSQL key/value database.
 
 ### Install PCP-zeroconf and ensure PCP services are started
 
 ```bash
-sudo rpm-ostree install pcp-zeroconf pcp-pmda-openmetrics
+sudo rpm-ostree install pcp-zeroconf
 sudo systemctl reboot
 
 # after reboot
@@ -56,6 +56,9 @@ The grafana plugins included with the podman command include PCP Datasources and
 ### Valkey and pmproxy services
 
 Valkey container will be started as a systemd service.
+An SELinux module must be added to the system before running Valkey.
+Follow the steps to add the [SELinux module](./valkey-service/README.md#selinux-pcp_valkey-module)
+before starting the valkey service.
 
 ```bash
 cp ./valkey-service/valkey.service /etc/systemd/system/valkey.service

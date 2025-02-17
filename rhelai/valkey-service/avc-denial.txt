@@ -1,0 +1,1 @@
+type=AVC msg=audit(1739809406.506:724): avc:  denied  { name_connect } for  pid=5239 comm="pmproxy" dest=6379 scontext=system_u:system_r:pcp_pmproxy_t:s0 tcontext=system_u:object_r:redis_port_t:s0 tclass=tcp_socket permissive=0

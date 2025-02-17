@@ -16,7 +16,7 @@ ExecStart=/usr/bin/podman run --rm -d --name grafana \
   -e GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS="performancecopilot-pcp-app,pcp-valkey-datasource,pcp-vector-datasource,pcp-bpftrace-datasource,pcp-flamegraph-panel,pcp-breadcrumbs-panel,pcp-troubleshooting-panel,performancecopilot-valkey-datasource,performancecopilot-vector-datasource,performancecopilot-bpftrace-datasource,performancecopilot-flamegraph-panel,performancecopilot-breadcrumbs-panel,performancecopilot-troubleshooting-panel" \
   -e GF_PATHS_DATA=/grafana-data  \
   -v grafana-data:/grafana-data:Z   \
-    docker.io/grafana/grafana
+    registry.redhat.io/rhel9/grafana
 
 [Install]
 WantedBy=default.target

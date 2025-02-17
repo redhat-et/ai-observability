@@ -1,0 +1,11 @@
+
+module pcp_valkey 1.0;
+
+require {
+        type redis_port_t;
+        type pcp_pmproxy_t;
+        class tcp_socket name_connect;
+}
+
+#============= pcp_pmproxy_t ==============
+allow pcp_pmproxy_t redis_port_t:tcp_socket name_connect;
