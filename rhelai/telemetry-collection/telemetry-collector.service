@@ -38,3 +38,6 @@ ExecStart=/usr/bin/podman run --rm -d \
 # Clean shutdown
 ExecStop=/usr/bin/podman stop gpu-collector
 ExecStop=/usr/bin/podman stop otel-collector
+
+[Install]
+WantedBy=multi-user.target
