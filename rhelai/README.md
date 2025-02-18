@@ -16,7 +16,6 @@ ingesting any prometheus or OTLP metrics with PCP & Valkey as a backend. `Valkey
 sudo rpm-ostree install pcp-zeroconf
 sudo systemctl reboot
 
-# after reboot
 cd /var/lib/pcp/pmdas/openmetrics
 ./Install
 ```
@@ -26,6 +25,20 @@ Upon a reboot, PCP services `pmcd`, `pmlogger`, and `pmproxy` should be running.
 **NOTE** The pmcd, pmlogger, and pmproxy services and rpms are installed in the RHEL AI base image. It is possible to start these 3 systemd service
 to avoid installing `pcp-zeroconf`.  In future releases, `pcp-zeroconf` package will be included in the base OS image. It simplifies the
 management of the PCP services and ensures they remain connected. `pcp-pmda-openmetrics` will also be included in the base OS image. 
+
+#### To resolve SELinux
+
+SELinux policy included with pcp-zeroconf needs an update to enable openmetrics. Until then, to resolve SELinux issues, run this:
+
+See [pcp_openmetrics.te](./rhelai/pcp-selinux/pcp_openmetrics.te)
+
+```bash
+checkmodule -M -m -o pcp_openmetrics.mod pcp_openmetrics.te
+semodule_package -o pcp_openmetrics.pp -m pcp_openmetrics.mod
+semodule -i pcp_openmetrics.pp
+
+systemctl restart pmcd
+```
 
 ## OpenTelemetry Collector and OpenLit GPU Collector
 
