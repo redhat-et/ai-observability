@@ -1,6 +1,8 @@
 [Unit]
 Description=VLLM Podman Container Service
 After=network.target
+Requires=nvidia-persistenced.service
+After=nvidia-persistenced.service
 
 [Service]
 Type=oneshot
