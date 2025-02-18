@@ -79,32 +79,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "P90"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -139,7 +114,6 @@
           "hide": false,
           "includeNullMetadata": false,
           "instant": false,
-          "legendFormat": "P90",
           "options": {
             "rateConversion": true,
             "timeUtilizationConversion": true
@@ -154,7 +128,7 @@
             "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
           },
           "editorMode": "code",
-          "expr": "openmetrics.prometheus.vllm_e2e_request_latency_seconds_sum",
+          "expr": "(openmetrics.prometheus.vllm_e2e_request_latency_seconds_sum) / (openmetrics.prometheus.vllm_e2e_request_latency_seconds_count)\n",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -754,8 +728,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -850,8 +823,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -946,8 +918,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1042,8 +1013,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1138,8 +1108,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1248,8 +1217,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1305,13 +1273,13 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "vLLM-New",
   "uid": "ef1e493a-11a2-4354-8f68-4b51b53d913f",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
