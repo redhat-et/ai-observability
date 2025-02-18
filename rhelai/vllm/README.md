@@ -65,6 +65,12 @@ curl http://localhost:8000/metrics
 If opentelemetry-collector is running with a metrics backend and exporting to a visualization backend such as Grafana, you can explore the metrics
 there. 
 
+#### [WIP] vLLM PCP Grafana Dashboard
+
+[This dashboard](./vllm-pcp-grafana-dashboard.json) shows similar data to vLLM's
+[upstream grafanadashboard](https://github.com/vllm-project/vllm/blob/main/examples/online_serving/prometheus_grafana/grafana.json).
+This dashboard is a WIP and will be updated in the near future.
+
 ### View vLLM traces
 
 If opentelemetry-collector is running with a tracing backend and exporting to a visualization backend, you can view the traces there.
