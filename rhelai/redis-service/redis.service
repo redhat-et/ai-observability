@@ -1,0 +1,20 @@
+[Unit]
+Description=Start Redis container
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStartPre=-/usr/bin/podman rm -f redis
+
+ExecStart=/usr/bin/podman run --rm -d --name redis \
+  --network=host \
+  --security-opt label=disable \
+  -e ALLOW_EMPTY_PASSWORD=yes \
+  -v redis-data:/data:Z \
+  registry.redhat.io/rhel9/redis-7
+
+[Install]
+WantedBy=default.target

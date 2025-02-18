@@ -8,7 +8,7 @@ PCP is a suite of tools, services, and libraries for monitoring, visualizing, st
 PCP is the standard monitoring tool for RHEL systems, and as such is included in RHEL AI.
 
 The easiest way to get up and running with PCP is with the `pcp-zeroconf` package. It includes the `pcp-pmda-openmetrics` plugin that allows for
-ingesting any prometheus or OTLP metrics with PCP & Valkey as a backend. `Valkey` is an in-memory, NoSQL key/value database.
+ingesting any prometheus or OTLP metrics with PCP & Redis as a backend. `Redis` is an in-memory, NoSQL key/value database.
 
 ### Install PCP-zeroconf and ensure PCP services are started
 
@@ -54,39 +54,36 @@ all workload metrics, logs, and traces.
 
 # Telemetry Visualization in RHEL AI
 
-All that's required to view metrics in RHEL AI is `Grafana` with `PCP DataSource Plugins` and a `Valkey Datastore`.
+All that's required to view metrics in RHEL AI is `Grafana` with `PCP DataSource Plugins` and a `Redis Datastore`.
 
-## Start Valkey and Grafana
+## Start Redis and Grafana
 
-To keep the number of packages required to install minimal, Valkey and Grafana run with podman managed by systemd.
-In future releases of RHEL AI, Valkey & Grafana rpms could be added to the base OS image. This would avoid needing place the below systemd unit files. 
+To keep the number of packages required to install minimal, Redis and Grafana run with podman managed by systemd.
+In future releases of RHEL AI, Redis & Grafana rpms could be added to the base OS image. This would avoid needing place the below systemd unit files. 
 
-View the [valkey unit file](./valkey-service/valkey.service) and the [grafana unit file](./grafana-service/grafana.service)
-to view the podman commands. Enabling these systemd services ensures that valkey and grafana containers will start when the system boots up.
+View the [redis unit file](./redis-service/redis.service) and the [grafana unit file](./grafana-service/grafana.service)
+to view the podman commands. Enabling these systemd services ensures that redis and grafana containers will start when the system boots up.
 
 The grafana plugins included with the podman command include PCP Datasources and many preconfigured Grafana Dashboards for visualizing metrics.
 
-### Valkey and pmproxy services
+### Redis and pmproxy services
 
-Valkey container will be started as a systemd service.
-An SELinux module must be added to the system before running Valkey.
-Follow the steps to add the [SELinux module](./valkey-service/README.md#selinux-pcp_valkey-module)
-before starting the valkey service.
+Redis container will be started as a systemd service.
 
 ```bash
-cp ./valkey-service/valkey.service /etc/systemd/system/valkey.service
+cp ./redis-service/redis.service /etc/systemd/system/redis.service
 systemctl daemon-reload
-systemctl --enable valkey.service --now
+systemctl --enable redis.service --now
 
-# check that valkey is up and running and ready to connect with pmproxy
-systemctl status valkey
-podman logs valkey
-podman volume inspect valkey-data #<-podman volume with valkey data will persist service restarts
+# check that redis is up and running and ready to connect with pmproxy
+systemctl status redis
+podman logs redis
+podman volume inspect redis-data #<-podman volume with redis data will persist service restarts
 
-# restart pmproxy to connect to valkey
+# restart pmproxy to connect to redis
 sudo systemctl restart pmproxy
 
-# check that pmproxy and valkey are connected by receiving a non-empty response to the below command.
+# check that pmproxy and redis are connected by receiving a non-empty response to the below command.
 pmseries -p 6379 disk.dev.read
 61261618638aa1189c1cc2220815b0cec8c66414
 ```
@@ -110,7 +107,7 @@ podman volume inspect grafana-data #<-podman volume with grafana-data will persi
 
 Grafana is accessible at `http://ip-addr-local-host:3000`. From the Grafana UI, enable the PCP plugin.
 After the PCP plugin is added, use the `Add new Datasource` button to search for `PCP-*` Datasources.
-Add the PCP-Valkey Datasourse and and from there, import the listed Valkey
+Add the PCP-Redis Datasourse and and from there, import the listed Redis
 dashboards. Similarly, the PCP-Vector Datasource can be added and its dashboards imported.
 
 

@@ -24,8 +24,7 @@
   "panels": [
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -103,8 +102,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "disableTextWrap": false,
           "editorMode": "builder",
@@ -124,8 +122,7 @@
         },
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "editorMode": "code",
           "expr": "(openmetrics.prometheus.vllm_e2e_request_latency_seconds_sum) / (openmetrics.prometheus.vllm_e2e_request_latency_seconds_count)\n",
@@ -147,8 +144,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -226,8 +222,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_generation_tokens_total",
           "format": "time_series",
@@ -243,8 +238,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -322,8 +316,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_time_per_output_token_seconds_bucket",
           "format": "time_series",
@@ -335,8 +328,7 @@
         },
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_time_per_output_token_seconds_sum",
           "format": "time_series",
@@ -353,8 +345,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -432,8 +423,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_num_requests_running",
           "format": "time_series",
@@ -445,8 +435,7 @@
         },
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_num_requests_swapped",
           "format": "time_series",
@@ -459,8 +448,7 @@
         },
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_num_requests_waiting",
           "format": "time_series",
@@ -477,8 +465,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -556,8 +543,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_time_to_first_token_seconds_bucket",
           "format": "time_series",
@@ -573,8 +559,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -652,8 +637,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_gpu_cache_usage_perc",
           "format": "time_series",
@@ -665,8 +649,7 @@
         },
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_cpu_cache_usage_perc",
           "format": "time_series",
@@ -683,8 +666,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -761,8 +743,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_prompt_tokens_bucket",
           "format": "heatmap",
@@ -778,8 +759,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -856,8 +836,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_generation_tokens_bucket",
           "format": "time_series",
@@ -873,8 +852,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -951,8 +929,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_success_total",
           "format": "time_series",
@@ -968,8 +945,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -1046,8 +1022,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_queue_time_seconds_sum",
           "format": "time_series",
@@ -1063,8 +1038,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -1141,8 +1115,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_prefill_time_seconds_sum",
           "format": "time_series",
@@ -1154,8 +1127,7 @@
         },
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_decode_time_seconds_sum",
           "format": "time_series",
@@ -1172,8 +1144,7 @@
     },
     {
       "datasource": {
-        "type": "performancecopilot-valkey-datasource",
-        "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+        "type": "performancecopilot-redis-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -1250,8 +1221,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "performancecopilot-valkey-datasource",
-            "uid": "fb0382fa-3130-4d65-a980-52f7bace782c"
+            "type": "performancecopilot-redis-datasource"
           },
           "expr": "openmetrics.prometheus.vllm_request_max_num_generation_tokens_sum",
           "format": "time_series",
@@ -1279,7 +1249,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "vLLM-New",
-  "uid": "ef1e493a-11a2-4354-8f68-4b51b53d913f",
   "version": 3,
   "weekStart": ""
 }
