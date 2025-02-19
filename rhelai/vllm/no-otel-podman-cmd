@@ -4,17 +4,21 @@
 
 export INFERENCE_PORT=8000
 export INFERENCE_MODEL=meta-llama/Llama-3.1-8B-Instruct
-#export INFERENCE_MODEL=meta-llama/Llama-3.1-3B-Instruct
 HF_TOKEN=xxxxxxxxx
 
 podman run --rm -d \
-    --name vllm \
-    --device nvidia.com/gpu=all \
-    -v /home/cloud-user/.cache/huggingface:/root/.cache/huggingface \
-    --env "HUGGING_FACE_HUB_TOKEN=$HF_TOKEN" \
-    -p $INFERENCE_PORT:$INFERENCE_PORT \
-    --network=host \
-    -e VLLM_LOGGING_LEVEL=DEBUG \
-    docker.io/vllm/vllm-openai:latest \
-    --model $INFERENCE_MODEL \
-    --port $INFERENCE_PORT
+  --name vllm \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -v /REPLACE-WITH-HOMEDIR/.cache/huggingface:/root/.cache/huggingface \
+  -v /etc/vllm/tool_chat_template_llama3.1_json.jinja:/root/tool_chat_template_llama3.1_json.jinja:Z \
+  --env "HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}" \
+  -p ${INFERENCE_PORT}:${INFERENCE_PORT} \
+  --network=host \
+  -e VLLM_LOGGING_LEVEL=DEBUG \
+  docker.io/vllm/vllm-openai:latest \
+  --model ${INFERENCE_MODEL} \
+  --enable-auto-tool-choice \
+  --tool-call-parser llama3_json \
+  --chat-template /root/tool_chat_template_llama3.1_json.jinja \
+  --port ${INFERENCE_PORT}
