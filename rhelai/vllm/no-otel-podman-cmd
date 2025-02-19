@@ -1,5 +1,6 @@
 # NOTES: Run this, then, cd ~/llama-stack/distrubutions/remote-vllm && 
 # https://llama-stack.readthedocs.io/en/latest/distributions/self_hosted_distro/remote-vllm.html
+# curl -o /etc/vllm/tool_chat_template_llama3.1_json.jinja https://raw.githubusercontent.com/vllm-project/vllm/refs/heads/main/examples/tool_chat_template_llama3.1_json.jinja
 
 
 export INFERENCE_PORT=8000
