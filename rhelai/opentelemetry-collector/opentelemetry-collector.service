@@ -1,0 +1,28 @@
+[Unit]
+Description=Run OpenTelemetry Collector container
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+# Clean up containers if they exist
+ExecStartPre=-/usr/bin/podman stop otel-collector
+ExecStartPre=-/usr/bin/podman rm -f otel-collector
+
+# Start OTEL Collector container
+# Update /LOCAL/PATH/TO
+ExecStart=/usr/bin/podman run --rm -d \
+    --name otel-collector \
+    --network=host \
+    --user=0 \
+    -v /etc/opentelemetry-collector/otel-config.yaml:/etc/otelcol/config.yaml:Z \
+    ghcr.io/os-observability/redhat-opentelemetry-collector/redhat-opentelemetry-collector:main \
+      --config /etc/otelcol/config.yaml
+
+# Clean shutdown
+ExecStop=/usr/bin/podman stop otel-collector
+
+[Install]
+WantedBy=multi-user.target

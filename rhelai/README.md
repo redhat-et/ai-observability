@@ -26,31 +26,17 @@ Upon a reboot, PCP services `pmcd`, `pmlogger`, and `pmproxy` should be running.
 to avoid installing `pcp-zeroconf`.  In future releases, `pcp-zeroconf` package will be included in the base OS image. It simplifies the
 management of the PCP services and ensures they remain connected. `pcp-pmda-openmetrics` will also be included in the base OS image. 
 
-#### To resolve SELinux
+## OpenTelemetry Collector
 
-SELinux policy included with pcp-zeroconf needs an update to enable openmetrics. Until then, to resolve SELinux issues, run this:
+The OpenTelemetry Collector creates a unified way to collect metrics, logs, and traces and can then export them to various
+observability backends.
 
-See [pcp_openmetrics.te](./rhelai/pcp-selinux/pcp_openmetrics.te)
-
-```bash
-checkmodule -M -m -o pcp_openmetrics.mod pcp_openmetrics.te
-semodule_package -o pcp_openmetrics.pp -m pcp_openmetrics.mod
-semodule -i pcp_openmetrics.pp
-
-systemctl restart pmcd
-```
-
-## OpenTelemetry Collector and OpenLit GPU Collector
-
-OpenLit GPU Collector gathers GPU utilization data from AMD or NVIDIA GPUs. The OpenTelemetry Collector creates a unified way to collect 
-metrics, logs, and traces and can then export them to various observability backends.
-
-This [telemetry-collector](./telemetry-collector-service/README.md) will run opentelemetry-collector and openlit-gpu-collector podman containers
+This [opentelemetry-collector](./opentelemetry-collector-service/README.md) will run opentelemetry-collector podman container
 managed by systemd.
 
 
-PCP, OpenTelemetry Collector, and OpenLit GPU Collector together provide a complete solution in RHEL AI for collecting system metrics and
-all workload metrics, logs, and traces.
+PCP and OpenTelemetry Collector together can provide a complete solution in RHEL AI for collecting and analyzing system metrics and
+all workload metrics.
 
 # Telemetry Visualization in RHEL AI
 
