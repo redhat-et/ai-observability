@@ -2,7 +2,7 @@
 
 # Telemetry Collection in RHEL AI
 
-## Performance Co-Pilot (PCP)
+## Performance Co-Pilot
 
 PCP is a suite of tools, services, and libraries for monitoring, visualizing, storing, and analyzing system-level performance measurements.
 PCP is the standard monitoring tool for RHEL systems, and as such is included in RHEL AI.
