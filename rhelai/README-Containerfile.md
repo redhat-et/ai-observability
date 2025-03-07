@@ -51,5 +51,5 @@ reboot
 You should now have PCP started with openmetrics and nvidia PMDAs
 
 
-Add [redis service](../redis-service/redis.service) and [grafana-pcp service](../grafana-service/grafana.service)
+Add [redis service](./redis-service/redis.service) and [grafana-pcp service](./grafana-service/grafana.service)
 to visualize the PCP metrics with the Performance Co-Pilot Datasource. 
