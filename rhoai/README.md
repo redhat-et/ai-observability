@@ -5,6 +5,7 @@ Follow this README to configure an observability stack in OpenShift to visualize
 ## Hub OpenShift Operators
 
 Operators are available from OperatorHub, or install via kustomize with the command below.
+If installing with kustomize, ensure operators are ready before proceeding.
 
 Install operators with:
 
