@@ -46,11 +46,11 @@ spec:
     exporters:
       debug:
         verbosity: basic
-      otlphttp/dynatrace:
+      #otlphttp/dynatrace:
         # update endpoint and Api-Token before deploying
-        endpoint: "https://XXXXXXX.live.dynatrace.com/api/v2/otlp"
-        headers:
-          Authorization: "Api-Token dxxxxxx.XXXXXXXXXXXXXXX"
+        #endpoint: "https://XXXXXXX.live.dynatrace.com/api/v2/otlp"
+        #headers:
+          #Authorization: "Api-Token dxxxxxx.XXXXXXXXXXXXXXX"
       # Export the dev tenant traces to a Tempo instance
       otlphttp/dev:
         endpoint: https://tempo-tempostack-gateway.observability-hub.svc.cluster.local:8080/api/traces/v1/dev
@@ -62,26 +62,27 @@ spec:
         headers:
           X-Scope-OrgID: "dev"
       # cluster user-workload monitoring prometheus backend
-      prometheus/ocp-uwm:
-        add_metric_suffixes: false
-        endpoint: 0.0.0.0:8889
-        metric_expiration: 180m
-        resource_to_telemetry_conversion:
-          enabled: true
+      #prometheus/ocp-uwm:
+      #  add_metric_suffixes: false
+      #  endpoint: 0.0.0.0:8889
+      #  metric_expiration: 180m
+      #  resource_to_telemetry_conversion:
+      #    enabled: true
 
     receivers:
       prometheus:
         config:
           scrape_configs:
             # service/vllm in ns/llama-serve
+            # add any service.ns.svc.cluster.local:port that includes a /metrics endpoint
             - job_name: vllm-llama-serve
-              scrape_interval: 5s
+              scrape_interval: 15s
               static_configs:
                 - targets:
                     - 'vllm.llama-serve.svc.cluster.local:8000'
             # service/safety in ns/llama-serve
             - job_name: vllm-safety-serve
-              scrape_interval: 5s
+              scrape_interval: 15s
               static_configs:
                 - targets:
                     - 'safety.llama-serve.svc.cluster.local:8000'
@@ -105,7 +106,9 @@ spec:
         send_batch_size: 100
         timeout: 1s
       # cumulativetodelta necessary to export to dynatrace
-      cumulativetodelta: {}
+      # Dynatrace only accepts delta metrics
+      # OCP user-workload-monitoring only accepts cumulative metrics
+      #cumulativetodelta: {}
       memory_limiter:
         check_interval: 5s
         limit_percentage: 95
@@ -118,20 +121,20 @@ spec:
         metrics:
           exporters:
           - debug
-          - prometheus/ocp-uwm
-          - otlphttp/dynatrace
+          #- prometheus/ocp-uwm
+          #- otlphttp/dynatrace
           receivers:
           - otlp
           - prometheus
           processors:
-          - cumulativetodelta
+          #- cumulativetodelta
           - batch
           - memory_limiter
         traces:
           exporters:
           - debug
           - otlphttp/dev
-          - otlphttp/dynatrace
+          #- otlphttp/dynatrace
           receivers:
           - otlp
           processors:

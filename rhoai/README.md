@@ -21,18 +21,18 @@ prometheus instance is utilized as prometheus backend. Tempo is deployed and is 
 
 2. **Tempo Operator**: Provides `TempoStack` Custom Resource. This is the backend for distributed tracing. An S3-compatible storage (Minio) is paired with Tempo.
 
-3. **Grafana Operator**: Provides Grafana APIs including `GrafanaDashboard`, `Grafana`, and `GrafanaDataSource` that will be used to visualize telemetry.
-
-4. **Cluster Observability Operator**: This provides PodMonitor and ServiceMonitor Custom Resources which are necessary for OpenShift user-workload
+3. **Cluster Observability Operator**: This provides PodMonitor and ServiceMonitor Custom Resources which are necessary for OpenShift user-workload
 monitoring's prometheus to scrape workload metrics. Also, the COO provides UIPlugins for viewing telemetry. 
+
+3. **(optional) Grafana Operator**: Provides Grafana APIs including `GrafanaDashboard`, `Grafana`, and `GrafanaDataSource` that will be used to visualize telemetry.
 
 ## Create PodMonitor or ServiceMonitor for any AI Workload that exposes a metrics endpoint
 
 This is how to enable collection of user-workload metrics for any workload within OpenShift. You need to create a `PodMonitor` or a `ServiceMonitor`.
-The PodMonitor will ensure all metrics from a particular pod will be scraped by the user-workload-monitoring Prometheus, and a ServiceMonitor will
+The PodMonitor will ensure all metrics from pods with matching selectors will be scraped by the user-workload-monitoring Prometheus, and a ServiceMonitor will
 scrape from any pod that runs under a particular service.
 
-* [Example PodMonitor](./podmonitor-example.yaml)
+* [Example PodMonitor](./podmonitor-example-0.yaml)
 * [Example ServiceMonitor](./servicemonitor-example.yaml)
 
 Upon creation of either, metrics will be scraped and will be visible from the console `Observe -> Metrics` dashboards.
@@ -59,9 +59,10 @@ oc apply --kustomize ./tempo
 oc apply --kustomize ./otel-collector
 ```
 
-### Metrics Backend & Grafana 
+### Grafana 
 
 This will deploy a Grafana instance, and Prometheus & Tempo DataSources
+The prometheus datasource is the user-workload-monitoring prometheus running in `openshift-user-workload-monitoring` namespace.
 The Grafana console is configured with `username: rhel, password: rhel`
 
 ```bash
