@@ -3,6 +3,7 @@ kind: Kustomization
   
 namespace: observability-hub
 resources:
+- tempo-role.yaml
 - minio-secret-tempo.yaml
 - minio-tempo-pvc.yaml
 - minio-tempo-svc.yaml

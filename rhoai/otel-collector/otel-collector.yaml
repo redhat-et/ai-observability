@@ -46,6 +46,11 @@ spec:
     exporters:
       debug:
         verbosity: basic
+      otlphttp/dynatrace:
+        # update endpoint and Api-Token before deploying
+        endpoint: "https://XXXXXXX.live.dynatrace.com/api/v2/otlp"
+        headers:
+          Authorization: "Api-Token dxxxxxx.XXXXXXXXXXXXXXX"
       # Export the dev tenant traces to a Tempo instance
       otlphttp/dev:
         endpoint: https://tempo-tempostack-gateway.observability-hub.svc.cluster.local:8080/api/traces/v1/dev
@@ -114,6 +119,7 @@ spec:
           exporters:
           - debug
           - prometheus/ocp-uwm
+          - otlphttp/dynatrace
           receivers:
           - otlp
           - prometheus
@@ -125,6 +131,7 @@ spec:
           exporters:
           - debug
           - otlphttp/dev
+          - otlphttp/dynatrace
           receivers:
           - otlp
           processors:
