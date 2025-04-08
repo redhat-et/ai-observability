@@ -2,7 +2,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: minio-tempo
-  namespace: observability-hub
 spec:
   replicas: 1
   selector:
@@ -29,9 +28,15 @@ spec:
           env:
             # TEST VALUES ONLY USED IN TEST DEV ENV
             - name: MINIO_ROOT_USER
-              value: tempo # notsecret 
+              valueFrom:
+                secretKeyRef:
+                  name: minio-user-creds
+                  key: MINIO_ROOT_USER
             - name: MINIO_ROOT_PASSWORD
-              value: supersecret # notsecret
+              valueFrom:
+                secretKeyRef:
+                  name: minio-user-creds
+                  key: MINIO_ROOT_PASSWORD
           ports:
             - containerPort: 9000
               protocol: TCP

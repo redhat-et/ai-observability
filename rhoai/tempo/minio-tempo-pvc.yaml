@@ -6,7 +6,6 @@ metadata:
   labels:
     app.kubernetes.io/name: minio-tempo
   name: minio-tempo
-  namespace: observability-hub
 spec:
   accessModes:
   - ReadWriteOnce

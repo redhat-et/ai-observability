@@ -3,4 +3,6 @@ kind: Kustomization
   
 namespace: observability-hub
 resources:
+- sa.yaml
+- clusterrole.yaml
 - otel-collector.yaml

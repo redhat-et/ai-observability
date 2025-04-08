@@ -2,7 +2,6 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: prometheus
-  namespace: observability-hub
 spec:
   instanceSelector:
     matchLabels:
@@ -31,7 +30,6 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: tempo
-  namespace: observability-hub
 spec:
   instanceSelector:
     matchLabels:
@@ -41,6 +39,7 @@ spec:
     access: proxy
     editable: true
     type: tempo
+    # This is specific to "observability-hub" namespace. If running tempostack elsewhere, need to update
     url: "https://tempo-tempostack-gateway-observability-hub.apps.ocp-beta-test.nerc.mghpcc.org/api/traces/v1/dev/tempo"
     isDefault: false
     secureJsonData:

@@ -2,7 +2,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: minio-tempo
-  namespace: observability-hub
 spec:
   ports:
     - protocol: TCP
