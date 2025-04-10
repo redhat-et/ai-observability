@@ -31,7 +31,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "behptshy333lsd"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "End to end request latency measured in seconds.",
       "fieldConfig": {
@@ -115,7 +115,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -131,7 +131,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -148,7 +148,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -165,7 +165,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -182,7 +182,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "rate(vllm:e2e_request_latency_seconds_sum{model_name=\"$model_name\"}[$__rate_interval])\n/\nrate(vllm:e2e_request_latency_seconds_count{model_name=\"$model_name\"}[$__rate_interval])",
@@ -199,7 +199,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "behptshy333lsd"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Number of tokens processed per second",
       "fieldConfig": {
@@ -282,7 +282,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -298,7 +298,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "a0fa9d88-8932-41f7-af80-6f678d4fb1e7"
+            "uid": "${DS_PROMETHEUS}"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -1520,8 +1520,8 @@
     "list": [
       {
         "current": {
-          "text": "prometheus-2",
-          "value": "behptshy333lsd"
+          "text": "prometheus",
+          "value": "${DS_PROMETHEUS}"
         },
         "includeAll": false,
         "label": "datasource",
