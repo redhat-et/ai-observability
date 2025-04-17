@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: vllm-usage-dashboard
+spec:
+  workspaces:
+    - name: output
+  tasks:
+    - name: extract-usage-stats
+      taskRef:
+        name: extract-usage-stats
+      workspaces:
+        - name: output
+          workspace: output
+
+    - name: fetch-runtime-metrics
+      runAfter:
+        - extract-usage-stats
+      taskRef:
+        name: fetch-runtime-metrics
+      workspaces:
+        - name: output
+          workspace: output
+
+    - name: render-dashboard
+      runAfter:
+        - fetch-runtime-metrics
+      taskRef:
+        name: render-hex-style-dashboard
+      workspaces:
+        - name: output
+          workspace: output

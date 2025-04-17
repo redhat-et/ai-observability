@@ -1,0 +1,51 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: render-hex-style-dashboard
+spec:
+  workspaces:
+    - name: output
+  results:
+    - name: csv-path
+      description: "Path to the final merged metrics CSV"
+  steps:
+    - name: render-summary
+      image: registry.redhat.io/ubi9/python-39
+      script: |
+        #!/usr/bin/env python3
+        import os, json, csv
+        import glob
+
+        usage_dir = "$(workspaces.output.path)/usage_stats"
+        metric_file = "$(workspaces.output.path)/metrics/gpu_hours.json"
+        output_file = "$(workspaces.output.path)/metrics.csv"
+
+        # Load usage_stats.json from all pods
+        usage_data = {}
+        for path in glob.glob(f"{usage_dir}/*.json"):
+            with open(path) as f:
+                d = json.load(f)
+                usage_data[d.get("uuid") or os.path.basename(path)] = d
+
+        # Load PromQL result for GPU hours
+        with open(metric_file) as f:
+            gpu_data = json.load(f)["data"]["result"]
+
+        # Write combined CSV
+        with open(output_file, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["uuid", "model_architecture", "gpu_type", "gpu_hours"])
+            for row in gpu_data:
+                model = row["metric"].get("model_name", "unknown")
+                val = float(row["value"][1])
+                matched = next((u for u in usage_data.values() if u.get("model_architecture") == model), None)
+                writer.writerow([
+                    matched.get("uuid") if matched else "n/a",
+                    model,
+                    matched.get("gpu_type") if matched else "n/a",
+                    val
+                ])
+        print(f"metrics.csv written to {output_file}")
+        with open("/tekton/results/csv-path", "w") as result_file:
+            result_file.write(output_file)
+

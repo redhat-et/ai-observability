@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: extract-usage-stats
+spec:
+  workspaces:
+    - name: output
+  steps:
+    - name: extract-json
+      image: registry.access.redhat.com/openshift4/ose-cli:latest
+      script: |
+        #!/bin/sh
+        mkdir -p $(workspaces.output.path)/usage_stats
+        for pod in $(oc get pods --all-namespaces -l app=vllm -o jsonpath='{.items[*].metadata.name}'); do
+          echo "Extracting usage_stats.json from $pod..."
+          oc exec $pod -- cat /.config/usage_stats.json \
+            > $(workspaces.output.path)/usage_stats/${pod}.json || echo "Failed for $pod"
+        done
+

@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: vllm-usage-dashboard-run
+spec:
+  pipelineRef:
+    name: vllm-usage-dashboard
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: usage-stats-output-pvc

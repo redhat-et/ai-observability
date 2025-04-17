@@ -1,0 +1,6 @@
+FROM registry.access.redhat.com/ubi9/python-39
+
+RUN pip install psutil torch --no-cache-dir
+COPY usage_stats.py /usr/local/bin/usage_stats.py
+
+ENTRYPOINT ["python3", "/usr/local/bin/usage_stats.py"]

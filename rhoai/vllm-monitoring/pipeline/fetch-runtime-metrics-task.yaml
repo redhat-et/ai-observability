@@ -1,0 +1,48 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: fetch-runtime-metrics
+spec:
+  workspaces:
+    - name: output
+  volumes:
+    - name: grafana-token
+      secret:
+        secretName: grafana-sa-token
+  steps:
+    - name: fetch-promql
+      env:
+        - name: WORKSPACE_OUTPUT_PATH
+          value: /workspace/output
+      image: registry.redhat.io/ubi9/python-39
+      volumeMounts:
+        - name: grafana-token
+          mountPath: /var/run/secrets/grafana
+          readOnly: true
+      script: |
+        #!/usr/bin/env python3
+        import requests, json, os
+
+        prom_url = os.environ.get("PROM_URL", "https://thanos-querier.openshift-monitoring.svc.cluster.local:9091")
+
+        # Read Bearer token from mounted secret
+        with open("/var/run/secrets/grafana/token") as f:
+            token = f.read().strip()
+
+        headers = {"Authorization": f"Bearer {token}"}
+
+        queries = {
+            "gpu_hours": "sum by (model_name) (increase(vllm:request_max_num_generation_tokens_sum[24h])) / 3600",
+            "prompt_rate": "sum by (model_name) (rate(vllm:prompt_tokens_total[5m]))",
+            "generation_rate": "sum by (model_name) (rate(vllm:generation_tokens_total[5m]))"
+        }
+
+        output_path = os.environ.get("WORKSPACE_OUTPUT_PATH", "/workspace/output")
+        metrics_dir = os.path.join(output_path, "metrics")
+        os.makedirs(metrics_dir, exist_ok=True)
+
+        for name, q in queries.items():
+            print(f"Querying: {name}")
+            r = requests.get(f"{prom_url}/api/v1/query", params={"query": q}, headers=headers, verify=False)
+            with open(os.path.join(metrics_dir, f"{name}.json"), "w") as f:
+                json.dump(r.json(), f, indent=2)
