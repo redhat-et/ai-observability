@@ -40,7 +40,7 @@ spec:
     editable: true
     type: tempo
     # This is specific to "observability-hub" namespace. If running tempostack elsewhere, need to update
-    url: "https://tempo-tempostack-gateway-observability-hub.apps.ocp-beta-test.nerc.mghpcc.org/api/traces/v1/dev/tempo"
+    url: "https://tempo-tempostack-gateway.observability-hub.svc.cluster.local:8081/api/traces/v1/dev/tempo"
     isDefault: false
     secureJsonData:
       "httpHeaderValue1": "Bearer ${token}"

@@ -10,4 +10,3 @@ spec:
       dashboards: grafana   # This label matches the grafana Grafana instance
   # This json was copied and modified from https://github.com/kevchu3/openshift4-grafana/blob/master/dashboards/json_raw/cluster_metrics.ocp416.json
   url: https://raw.githubusercontent.com/redhat-et/edge-ocp-observability/refs/heads/main/observability-hub/grafana/cluster-metrics-dashboard/cluster_metrics_ocp.json
-
