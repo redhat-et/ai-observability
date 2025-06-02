@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llamastack
+  namespace: llama-stack
+  labels:
+    app: llamastack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llamastack
+  template:
+    metadata:
+      labels:
+        app: llamastack
+      annotations:
+        # Inject the OTEL collector sidecar
+        #sidecar.opentelemetry.io/inject: "llamastack-otel-collector"
+    spec:
+      containers:
+      - name: llamastack
+        image: llamastack/distribution-remote-vllm:latest 
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8321
+          name: http
+        env:
+        - name: VLLM_URL
+          value: "http://llm-d-inference-gateway.llm-d.svc.cluster.local:80/v1"
+        - name: INFERENCE_MODEL
+          value: "meta-llama/Llama-3.2-3B-Instruct"  # Update this to your model
+        - name: VLLM_MAX_TOKENS
+          value: "4096"
+        - name: VLLM_API_TOKEN
+          value: "fake"
+        - name: VLLM_TLS_VERIFY
+          value: "true"
+        - name: TELEMETRY_SINKS
+          value: "console,sqlite,otel_trace"
+        - name: OTEL_TRACE_ENDPOINT
+          #value: "http://localhost:4318/v1/traces"
+          value: "http://tracing-collector-collector.llm-d-monitoring.svc.cluster.local:4318/v1/traces"
+        - name: OTEL_SERVICE_NAME
+          value: "llama-stack"
+        - name: SQLITE_STORE_DIR
+          value: "/data"
+        - name: SQLITE_DB_PATH
+          value: "/data/trace_store.db"
+        - name: BRAVE_SEARCH_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: brave-search-api-key
+              optional: true
+        - name: TAVILY_SEARCH_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: tavily-search-api-key
+              optional: true
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: openai-api-key
+              optional: true
+        - name: WOLFRAM_ALPHA_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: wolfram-alpha-api-key
+              optional: true
+        volumeMounts:
+        - name: config
+          mountPath: /app
+        - name: data
+          mountPath: /data
+        #command: ["sleep", "300"]
+        command: ["python", "-m", "llama_stack.distribution.server.server"]
+        args: ["--config", "/app/run.yaml", "--port", "8321"]
+      volumes:
+      - name: config
+        configMap:
+          name: run-config
+      - name: data
+        persistentVolumeClaim:
+          claimName: llamastack-data
