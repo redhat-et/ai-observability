@@ -2,7 +2,7 @@
 
 This guide provides step-by-step instructions for manually installing Prometheus, Grafana, and OpenTelemetry Collector.
 
-**Note:** `llm-d` quickstart installation includes Prometheus, Grafana, and vLLM ServiceMonitor. If you've already installed `llm-d` skip to 
+> **📝 NOTE:** `llm-d` quickstart installation includes Prometheus, Grafana, and vLLM ServiceMonitor. If you've already installed `llm-d` skip to [opentelemetry operator install](#opentelemetrycollector-operator-installation) and/or [tempo trace backend install](#tempo-backend-installation-for-trace-storage).
 
 ## Prerequisites
 
@@ -13,6 +13,8 @@ Before starting, ensure you have:
 - Access to a running Kubernetes cluster
 
 ## Prometheus & Grafana Installation Steps
+
+> **📝 NOTE:** If running llm-d and it was deployed via the quickstart & without `--disable-metrics-collection`, prometheus & grafana are already installed. For more information about `llm-d quickstart` see [llm-d-deployer quickstart](https://github.com/llm-d/llm-d-deployer/tree/main/quickstart)
 
 ### Create Monitoring Namespace
 
@@ -80,13 +82,15 @@ Key configuration settings:
 
 If running llm-d, in order to collect vLLM metrics, you need a servicemonitor for the vllm services.
 
-**NOTE** If llm-d was deployed via the quickstart & without `--disable-metrics-collection`, the servicemonitor is already created.
+> **📝 NOTE:** If llm-d was deployed via the quickstart & without `--disable-metrics-collection`, the servicemonitor is already created.
 
 ```bash
 kubectl apply -n llm-d ./modelservice-monitor.yaml
 ```
 
 ## OpenTelemetryCollector Operator Installation 
+
+OpenTelemetry Collector is required with the [Llamastack deployment demo](./llama-stack-deploy/README.md) or any other application configured to generate OTLP telemetry.
 
 ```bash
 minikube addons enable ingress
