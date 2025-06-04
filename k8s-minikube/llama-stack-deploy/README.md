@@ -45,8 +45,7 @@ Edit [llama-stack-deploy/k8s/deployment.yaml](./llama-stack-deploy/k8s/deploymen
         - name: TELEMETRY_SINKS
           value: "console,sqlite,otel_trace"
         - name: OTEL_TRACE_ENDPOINT
-          #value: "http://localhost:4318/v1/traces"
-          value: "http://tracing-collector-collector.llm-d-monitoring.svc.cluster.local:4318/v1/traces"
+          value: "http://localhost:4318/v1/traces"
         - name: OTEL_SERVICE_NAME
           value: "llama-stack"
 ```
@@ -69,6 +68,15 @@ kubectl create namespace llama-stack
 kubectl apply -k llama-stack-deploy/k8s
 ```
 
+Delete the running llamastack pod to trigger the otel-collector-sidecar, this is a workaround for a limitation in the opentelemetry operator.
+```bash
+kubectl delete pod --all -n llama-stack
+# upon pod refresh, you should see 2 containers running in the deployment, 1 for llamastack and 1 otel-collector, like so:
+$ oc get pod -n llama-stack
+NAME                          READY   STATUS    RESTARTS   AGE
+llamastack-5b9455775b-l6cg8   2/2     Running   0          19m
+```
+
 ## 🔍 Accessing the Service
 
 After deployment, you can access Llama Stack at:
@@ -85,10 +93,10 @@ curl ""http://${MINIKUBE_IP}:${NODE_PORT}/v1/models"
 Example chat completion (minikube ip 192.168.49.2, nodePort 30321)
 
 ```bash
-curl http://192.168.49.2:30321/v1/inference/chat-completion \
+curl http://${MINIKUBE_IP}:${NODE_PORT}/v1/inference/chat-completion \
   -H "Content-Type: application/json" \
   -d '{
-    "model_id": "meta-llama/Llama-3.2-3b-Instruct",
+    "model_id": "meta-llama/Llama-3.2-3B-Instruct",
     "messages": [
       {"role": "user", "content": "Hello, how are you?"}
     ]
@@ -105,7 +113,7 @@ llama-stack-client inference chat-completion --message "Hello, how are you?"
 
 ## 📊 Viewing Traces
 
-Traces are sent to your Grafana Tempo instance at `http://tempo.llm-d-monitoring.svc.cluster.local:3100`. You can view them in Grafana using the Tempo datasource.
+Traces are sent to your Grafana Tempo instance at `http://tempo.llm-d-monitoring.svc.cluster.local:3100`. You can view them in Grafana using the Tempo datasource. See [tempo section](../README.md#tempo-backend-installation-for-trace-storage) of the observability stack document for how to deploy Tempo backend and add the Tempo Data Source to Grafana.
 
 ### Cleaning Up
 
