@@ -1,0 +1,12 @@
+grafana:
+  adminPassword: admin
+  service:
+    type: ClusterIP
+prometheus:
+  service:
+    type: ClusterIP
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitor: {}
+    serviceMonitorNamespaceSelector: {}
+    maximumStartupDurationSeconds: 300

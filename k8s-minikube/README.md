@@ -27,33 +27,12 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 ```
 
-#### Prepare Prometheus Values Configuration
-
-Create a values file for Prometheus configuration. This creates a temporary file with minimal essential configurations:
-
-```bash
-cat <<EOF > /tmp/prometheus-values.yaml
-grafana:
-  adminPassword: admin
-  service:
-    type: ClusterIP
-prometheus:
-  service:
-    type: ClusterIP
-  prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
-    serviceMonitor: {}
-    serviceMonitorNamespaceSelector: {}
-    maximumStartupDurationSeconds: 300
-EOF
-```
-
 #### Install Prometheus Stack
 
 ```bash
 helm install prometheus prometheus-community/kube-prometheus-stack \
   --namespace llm-d-observability \
-  -f /tmp/prometheus-values.yaml
+  -f ./prom-values.yaml
 ```
 Wait for pods to be ready
 ```bash
@@ -96,6 +75,16 @@ Key configuration settings:
 - `serviceMonitorSelectorNilUsesHelmValues: false` - Enables discovery of all ServiceMonitors
 - `serviceMonitorSelector: {}` - No label restrictions on ServiceMonitor selection
 - `serviceMonitorNamespaceSelector: {}` - Discovery across all namespaces
+
+#### Example: Add servicemonitor for llm-d endpoint-picker service/pod
+
+If running llm-d, in order to collect vLLM metrics, you need a servicemonitor for the vllm services.
+
+**NOTE** If llm-d was deployed via the quickstart & without `--disable-metrics-collection`, the servicemonitor is already created.
+
+```bash
+kubectl apply -n llm-d ./modelservice-monitor.yaml
+```
 
 ## OpenTelemetryCollector Operator Installation 
 

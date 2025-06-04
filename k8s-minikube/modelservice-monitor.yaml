@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: modelservice-monitor
+  namespace: llm-d # <- Modify to llm-d namespace
+spec:
+  endpoints:
+  - interval: 15s
+    path: /metrics
+    port: vllm
+  jobLabel: llm-d-modelservice
+  namespaceSelector:
+    matchNames:
+    - llm-d # <- Modify to llm-d namespace
+  selector:
+    matchLabels:
+      llmd.ai/gather-metrics: "true"
