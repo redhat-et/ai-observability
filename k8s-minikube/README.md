@@ -135,7 +135,8 @@ This installs Tempo with default in-memory storage suitable for local and develo
 To connect Grafana to Tempo, open the Grafana dashboard:
 
 ```bash
-kubectl port-forward -n llm-d-observability svc/prometheus-grafana 3000:80
+kubectl port-forward -n llm-d-observability --address 0.0.0.0 svc/prometheus-grafana 3000:80
+# --address is necessary if running in cloud VM
 ```
 Then navigate to **Configuration → Data Sources → Add data source**, and:
 
