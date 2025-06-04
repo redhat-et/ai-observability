@@ -73,18 +73,20 @@ kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana \
 To access Grafana, you can use port-forwarding:
 
 ```bash
-kubectl port-forward -n llm-d-observability svc/prometheus-grafana 3000:80
+kubectl port-forward -n llm-d-observability --address 0.0.0.0 svc/prometheus-grafana 3000:80
+# --address is necessary if running in cloud VM
 ```
 
-Then access Grafana at `http://localhost:3000` with username:password `admin:admin`:
+Then access Grafana at `http://localhost-or-cloud-vm-ip:3000` with username:password `admin:admin`:
 
 #### Prometheus UI
 
 ```bash
-kubectl port-forward -n llm-d-observability svc/prometheus-kube-prometheus-prometheus 9090:9090
+kubectl port-forward -n llm-d-observability --address 0.0.0.0 svc/prometheus-kube-prometheus-prometheus 9090:9090
+# --address is necessary if running in cloud VM
 ```
 
-Then access Prometheus at `http://localhost:9090`
+Then access Prometheus at `http://localhost-or-cloud-vm-ip:9090`
 
 ### ServiceMonitor Integration
 
