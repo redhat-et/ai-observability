@@ -1,0 +1,36 @@
+# based on https://github.com/opendatahub-io/llama-stack-demos/tree/main/kubernetes/streamlit-client
+# UI see this: https://github.com/meta-llama/llama-stack/tree/main/llama_stack/distribution/ui
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit
+  template:
+    metadata:
+      labels:
+        app: streamlit
+    spec:
+      containers:
+      - image: quay.io/redhat-et/streamlit_client:0.1.0
+        imagePullPolicy: IfNotPresent
+        name: streamlit-client
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8501
+          protocol: TCP
+        env:
+          - name: LLAMA_STACK_ENDPOINT
+            value: 'http://192.168.49.2:30321'
+          - name: TAVILY_SEARCH_API_KEY
+            valueFrom:
+              secretKeyRef:
+                # see ../k8s/secret-template.yaml
+                name: api-keys
+                key: tavily-search-api-key
