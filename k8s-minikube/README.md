@@ -95,6 +95,8 @@ kubectl apply -n llm-d ./modelservice-monitor.yaml
 
 OpenTelemetry Collector is required with the [Llamastack deployment demo](./llama-stack-deploy/README.md) or any other application configured to generate OTLP telemetry.
 
+> **📝 NOTE:** If running with llm-d quickstart, the MONITORING_NS should be set to `llm-d-monitoring` to add to the already-existing observability stack.
+
 ```bash
 minikube addons enable ingress
 helm repo add jetstack https://charts.jetstack.io
@@ -130,6 +132,8 @@ helm repo update
 ````
 ### Install Tempo
 
+> **📝 NOTE:** If running with llm-d quickstart, the MONITORING_NS should be set to `llm-d-monitoring` to add to the already-existing observability stack.
+
 ```bash
 helm install tempo grafana/tempo \
   --namespace $MONITORING_NS \
@@ -164,7 +168,7 @@ Make sure your OpenTelemetryCollector exports traces to Tempo:
 ```yaml
 exporters:
   otlp/tempo:
-    endpoint: tempo.$MONITORING_NS.svc.cluster.local:4317
+    endpoint: tempo.REPACEME-WITH-$MONITORING_NS.svc.cluster.local:4317
     tls:
       insecure: true
 ```
