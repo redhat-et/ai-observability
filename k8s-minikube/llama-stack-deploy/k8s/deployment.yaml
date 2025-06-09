@@ -16,7 +16,7 @@ spec:
         app: llamastack
       annotations:
         # Inject the OTEL collector sidecar
-        sidecar.opentelemetry.io/inject: "llamastack-otel-collector"
+        sidecar.opentelemetry.io/inject: "llamastack-otelsidecar"
     spec:
       containers:
       - name: llamastack
