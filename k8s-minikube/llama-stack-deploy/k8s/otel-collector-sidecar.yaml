@@ -19,7 +19,7 @@ spec:
         loglevel: debug
 
       otlp/tempo:
-        endpoint: http://tempo.llm-d-observability.svc.cluster.local:4317 # <- Update llm-d-observability to the ns running tempo if different
+        endpoint: http://tempo.llm-d-monitoring.svc.cluster.local:4317 # <- Update llm-d-monitoring to the ns running tempo if different
         tls:
           insecure: true
 
