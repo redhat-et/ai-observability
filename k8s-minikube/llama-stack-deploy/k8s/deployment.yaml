@@ -16,7 +16,7 @@ spec:
         app: llamastack
       annotations:
         # Inject the OTEL collector sidecar
-        #sidecar.opentelemetry.io/inject: "llamastack-otel-collector"
+        sidecar.opentelemetry.io/inject: "llamastack-otel-collector"
     spec:
       containers:
       - name: llamastack
@@ -35,12 +35,12 @@ spec:
         - name: VLLM_API_TOKEN
           value: "fake"
         - name: VLLM_TLS_VERIFY
-          value: "true"
+          value: "false"
         - name: TELEMETRY_SINKS
           value: "console,sqlite,otel_trace"
         - name: OTEL_TRACE_ENDPOINT
-          #value: "http://localhost:4318/v1/traces"
-          value: "http://tracing-collector-collector.llm-d-monitoring.svc.cluster.local:4318/v1/traces"
+          value: "http://localhost:4318/v1/traces"
+          #value: "http://tracing-collector-collector.llm-d-monitoring.svc.cluster.local:4318/v1/traces"
         - name: OTEL_SERVICE_NAME
           value: "llama-stack"
         - name: SQLITE_STORE_DIR

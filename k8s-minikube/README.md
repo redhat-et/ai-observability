@@ -18,8 +18,11 @@ Before starting, ensure you have:
 
 ### Create Monitoring Namespace
 
+> **📝 NOTE:** `llm-d-monitoring` is the namespace created by llm-d quickstart installer - to add otel-collector & tempo to this stack, use `llm-d-monitoring` as the monitoring namespace. However, keep in mind the `llm-d-monitoring` ns is deleted with `llmd-installer.sh uninstall`. You might instead choose another ns to keep the observability stack external to the llm-d-installer quickstart setup.
+
 ```bash
-kubectl create namespace llm-d-observability
+export MONITORING_NS=llm-d-observability
+kubectl create namespace $MONITORING_NS
 ```
 
 ### Install Prometheus & Grafana
@@ -33,18 +36,18 @@ helm repo update
 
 ```bash
 helm install prometheus prometheus-community/kube-prometheus-stack \
-  --namespace llm-d-observability \
+  --namespace $MONITORING_NS \
   -f ./prom-values.yaml
 ```
 Wait for pods to be ready
 ```bash
 # Wait for Prometheus pods
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus \
-  -n llm-d-observability --timeout=300s
+  -n $MONITORING_NS --timeout=300s
 
 # Wait for Grafana pods  
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana \
-  -n llm-d-observability --timeout=300s
+  -n $MONITORING_NS --timeout=300s
 ```
  
 ### Accessing the Services
@@ -54,7 +57,7 @@ kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana \
 To access Grafana, you can use port-forwarding:
 
 ```bash
-kubectl port-forward -n llm-d-observability --address 0.0.0.0 svc/prometheus-grafana 3000:80
+kubectl port-forward -n $MONITORING_NS --address 0.0.0.0 svc/prometheus-grafana 3000:80
 # --address is necessary if running in cloud VM
 ```
 
@@ -63,7 +66,7 @@ Then access Grafana at `http://localhost-or-cloud-vm-ip:3000` with username:pass
 #### Prometheus UI
 
 ```bash
-kubectl port-forward -n llm-d-observability --address 0.0.0.0 svc/prometheus-kube-prometheus-prometheus 9090:9090
+kubectl port-forward -n $MONITORING_NS --address 0.0.0.0 svc/prometheus-kube-prometheus-prometheus 9090:9090
 # --address is necessary if running in cloud VM
 ```
 
@@ -106,7 +109,7 @@ helm install --wait \
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 
 helm install --wait \
-  --namespace open-telemetry \
+  --namespace $MONITORING_NS \
   --create-namespace \
   --version 0.65.0 \
   --set "manager.collectorImage.repository=otel/opentelemetry-collector-contrib" \
@@ -129,7 +132,7 @@ helm repo update
 
 ```bash
 helm install tempo grafana/tempo \
-  --namespace llm-d-observability \
+  --namespace $MONITORING_NS \
   --set tempo.service.type=ClusterIP
 ```
 This installs Tempo with default in-memory storage suitable for local and development use. For persistent or production storage, additional configuration is required.
@@ -139,7 +142,7 @@ This installs Tempo with default in-memory storage suitable for local and develo
 To connect Grafana to Tempo, open the Grafana dashboard:
 
 ```bash
-kubectl port-forward -n llm-d-observability --address 0.0.0.0 svc/prometheus-grafana 3000:80
+kubectl port-forward -n $MONITORING_NS --address 0.0.0.0 svc/prometheus-grafana 3000:80
 # --address is necessary if running in cloud VM
 ```
 Then navigate to **Configuration → Data Sources → Add data source**, and:
@@ -161,7 +164,7 @@ Make sure your OpenTelemetryCollector exports traces to Tempo:
 ```yaml
 exporters:
   otlp/tempo:
-    endpoint: tempo.llm-d-observability.svc.cluster.local:4317
+    endpoint: tempo.$MONITORING_NS.svc.cluster.local:4317
     tls:
       insecure: true
 ```
@@ -185,8 +188,8 @@ You can now start running AI workloads and gathering telemetry! See [llm-d](./ll
 To remove the Prometheus, Grafana, Tempo, and OpenTelemetry stack:
 
 ```bash
-helm uninstall prometheus -n llm-d-observability
-helm uninstall tempo -n llm-d-observability
-helm uninstall cert-manager -n llm-d-observability
-helm uninstall opentelemetry-operator -n llm-d-observability
+helm uninstall prometheus -n $MONITORING_NS
+helm uninstall tempo -n $MONITORING_NS
+helm uninstall cert-manager -n $MONITORING_NS
+helm uninstall opentelemetry-operator -n $MONITORING_NS
 ```
