@@ -21,7 +21,7 @@ Before starting, ensure you have:
 > **📝 NOTE:** `llm-d-monitoring` is the namespace created by llm-d quickstart installer - to add otel-collector & tempo to this stack, use `llm-d-monitoring` as the monitoring namespace. However, keep in mind the `llm-d-monitoring` ns is deleted with `llmd-installer.sh uninstall`. You might instead choose another ns to keep the observability stack external to the llm-d-installer quickstart setup.
 
 ```bash
-export MONITORING_NS=llm-d-observability
+export MONITORING_NS=llm-d-monitoring
 kubectl create namespace $MONITORING_NS
 ```
 
@@ -117,7 +117,7 @@ helm install --wait \
   --set "manager.collectorImage.repository=otel/opentelemetry-collector-contrib" \
   opentelemetry-operator open-telemetry/opentelemetry-operator
 
-kubectl get pods -n open-telemetry
+kubectl get pods -n $MONITORING_NS
 ```
 
 ## Tempo Backend Installation (for Trace Storage)
