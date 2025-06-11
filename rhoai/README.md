@@ -38,7 +38,7 @@ Upon creation of either, metrics will be scraped and will be visible from the co
 
 ## Create custom resources and configurations for a central observability hub
 
-Create the observablity hub namespace `observability-hub`. If a different namespace is created, be sure to update the resource yamls accordingly.
+Create the observability hub namespace `observability-hub`. If a different namespace is created, be sure to update the resource yamls accordingly.
 
 ```bash
 oc create ns observability-hub
@@ -129,6 +129,7 @@ The Grafana console is configured with `username: rhel, password: rhel`
 
 ```bash
 oc apply --kustomize ./grafana/instance-with-prom-tempo-ds
+oc apply -f ./grafana/instance-with-prom-tempo-ds/sa-token-secret.yaml
 ```
 
 Upon success, you can explore metrics and traces from Grafana route.

@@ -5,7 +5,7 @@ metadata:
 spec:
   instanceSelector:
     matchLabels:
-      dashboards: grafana   # This label matches the grafana Grafana instance
+      app: grafana   # This label matches the grafana Grafana instance
   datasource:
     name: prometheus
     access: proxy
@@ -33,7 +33,7 @@ metadata:
 spec:
   instanceSelector:
     matchLabels:
-      dashboards: grafana   # This label matches the grafana Grafana instance
+      app: grafana   # This label matches the grafana Grafana instance
   datasource:
     name: tempo
     access: proxy

@@ -97,5 +97,5 @@ Add the PCP-Redis Datasourse and and from there, import the listed Redis
 dashboards. Similarly, the PCP-Vector Datasource can be added and its dashboards imported.
 
 
-See [AI Workload Monitoring](./workload-monitoring.md) to extend PCP & OpenTelemetry Collector to collect and visualize _all_ workload telemetry,
+See [PCP Workload Monitoring](./workload-monitoring.md) to extend PCP & OpenTelemetry Collector to collect and visualize _all_ workload telemetry,
 and also for examples on how to export telemetry to an external observability stack or vendor.

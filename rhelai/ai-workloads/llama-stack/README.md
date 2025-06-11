@@ -2,9 +2,9 @@
 
 **Note** vLLM doesn't run on MacOS, this is x86_64 specific
 
-## Start vLLM Server with Llama-3.1-8B-Instruct
+## Start vLLM Server with Llama-3.2-3B-Instruct
 
-Follow [this](../../vllm/README.md) to download `meta-llama/Llama-3.1-8B-Instruct` and serve it with `vLLM`. 
+Follow [this](../../vllm/README.md) to download `meta-llama/Llama-3.2-3B-Instruct` and serve it with `vLLM`. 
 This will enable function and tool-calling.
 
 ## Start Llama-stack server
@@ -16,9 +16,9 @@ git clone git@github.com:meta-llama/llama-stack && cd llama-stack
 conda create llamastack && conda activate llamastack
 
 export INFERENCE_PORT=8000
-export INFERENCE_MODEL=meta-llama/Llama-3.1-8B-Instruct
+export INFERENCE_MODEL=meta-llama/Llama-3.2-3B-Instruct
 export LLAMA_STACK_PORT=8321
-export HF_TOKEN=hf_xxxXXXX <-HF token needs to have access to meta-llama/llama-3.1 repo
+export HF_TOKEN=hf_xxxXXXX <-HF token needs to have access to meta-llama/llama-3.2 repo
 
 cd distributions/remote-vllm
 conda install pip && pip install llama-stack
@@ -36,7 +36,7 @@ llama stack run ./run.yaml   --port $LLAMA_STACK_PORT   --env INFERENCE_MODEL=$I
 podman run -it -d --name llamastack \
     --network=host \
     -v ./run.yaml:/tmp/run.yaml:Z \
-    llamastack/distribution-remote-vllm --yaml-config /tmp/run.yaml --env INFERENCE_MODEL=meta-llama/Llama-3.1-8B-Instruct --env VLLM_URL=http://127.0.0.1:8000/v1
+    llamastack/distribution-remote-vllm --yaml-config /tmp/run.yaml --env INFERENCE_MODEL=meta-llama/Llama-3.2-3B-Instruct --env VLLM_URL=http://127.0.0.1:8000/v1
 
 podman logs llamastack # <- add `-f` to follow the logs.
 ```
@@ -44,7 +44,7 @@ podman logs llamastack # <- add `-f` to follow the logs.
 Llama-Stack Server should now be running. You can test if it's working by running the following in a new terminal session:
 
 ```
-llama-stack-client --endpoint http://3.228.254.110:8321 inference chat-completion --message "hello, what model are you?"
+llama-stack-client --endpoint http://localhost:8321 inference chat-completion --message "hello, what model are you?"
 ```
 
 Now you can utilize the Llama-stack server to build and run AI applications.

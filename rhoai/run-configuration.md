@@ -35,7 +35,7 @@ only 4 metrics generated within Llamastack, and these are duplicates of what vLL
         provider_type: inline::meta-reference
         config:
           service_name: ${env.OTEL_SERVICE_NAME:llama-stack}
-          sinks: ${env.TELEMETRY_SINKS:console, otel_trace, sqlite} <-add otel_trace and/or otel_metric
+          sinks: ${env.TELEMETRY_SINKS:console, sqlite} <-add otel_trace and/or otel_metric in deployment.yaml below
           otel_trace_endpoint: ${env.OTEL_TRACE_ENDPOINT:} <-add ONLY if opentelemetry receiver endpoint is available.
 ---
 ```
@@ -51,12 +51,12 @@ And, in [kubernetes/llama-stack/deployment.yaml](../llama-stack/deployment.yaml)
       containers:
 ---
         env:
-        - name: OTEL_SERVICE_NAME
-          value: llamastack
+        - name: TELEMETRY_SINKS
+          value: 'console, sqlite, otel_trace' # can also add otel_metric if collecting metrics
         - name: OTEL_TRACE_ENDPOINT
           value: http://otel-collector.observability-hub.local.svc.cluster:4318/v1/traces
        #-  name: OTEL_METRIC_ENDPOINT
-       #-  value: http://localhost:4318/v1/metrics
+       #-  value: http://otel-collector.observability-hub.local.svc.cluster:4318/v1/metrics
 ---
 ```
 
@@ -81,8 +81,8 @@ only once for all servers.
       containers:
 ---
         env:
-        - name: OTEL_SERVICE_NAME
-          value: llamastack
+        - name: TELEMETRY_SINKS
+          value: 'console, sqlite, otel_trace' # can also add otel_metric if collecting metrics
         - name: OTEL_TRACE_ENDPOINT
           value: http://localhost:4318/v1/traces
        #-  name: OTEL_METRIC_ENDPOINT

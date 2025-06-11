@@ -54,10 +54,19 @@ service:
       address: 0.0.0.0:8887
   pipelines:
     traces:
-      receivers: [otlp]
-      processors: [batch, memory_limiter]
-      exporters: [debug]
+      receivers:
+      - otlp
+      processors:
+      - batch
+      - memory_limiter
+      exporters: debug
     metrics:
-      receivers: [otlp, prometheus]
-      processors: [batch, memory_limiter]
-      exporters: [prometheus, debug]
+      receivers:
+      - otlp
+      - prometheus
+      processors:
+      - batch
+      - memory_limiter
+      exporters:
+      - prometheus
+      - debug

@@ -5,6 +5,8 @@ namespace: observability-hub
 resources:
 - grafana-instance.yaml
 - role.yaml
-- sa-token-secret.yaml
 - route.yaml
 - datasources.yaml
+# need to create token secret separate to ensure grafana-sa exists first
+# - sa-token-secret.yaml
+

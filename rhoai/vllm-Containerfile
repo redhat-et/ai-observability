@@ -1,5 +1,6 @@
 # Use the vllm-openai image as the base
-FROM docker.io/vllm/vllm-openai:v0.7.3
+FROM docker.io/vllm/vllm-openai:latest
+#FROM docker.io/vllm/vllm-openai:v0.7.3
 
 # Install OpenTelemetry packages
 RUN pip install \

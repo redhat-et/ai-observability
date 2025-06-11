@@ -7,5 +7,5 @@ metadata:
 spec:
   instanceSelector:
     matchLabels:
-      dashboards: grafana   # This label matches the grafana instance
+      app: grafana   # This label matches the grafana instance
   url: https://raw.githubusercontent.com/redhat-et/ai-observability/refs/heads/main/vllm-dashboards/vllm-grafana-openshift.json
