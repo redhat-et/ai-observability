@@ -8,7 +8,6 @@ All commands are assumed to run as root user and haven't been tested as non-root
 ```bash
 # Edit ./vllm-env to match requirements and provide Huggingface Token
 mkdir /etc/vllm && cp ./vllm-env /etc/vllm/defaults
-curl -o /etc/vllm/tool_chat_template_llama3.2_json.jinja https://raw.githubusercontent.com/vllm-project/vllm/refs/heads/main/examples/tool_chat_template_llama3.2_json.jinja
 cp ./vllm.service /etc/systemd/system/vllm.service
 systemctl daemon-reload
 systemctl start vllm
