@@ -1,10 +1,6 @@
 # NOTES: Run this, then, cd ~/llama-stack/distrubutions/remote-vllm && 
 # https://llama-stack.readthedocs.io/en/latest/distributions/self_hosted_distro/remote-vllm.html
 
-
-# tool_chat_template_llama3.1_json.jinja can be downloaded from:
-# https://github.com/vllm-project/vllm/blob/main/examples/tool_chat_template_llama3.1_json.jinja
-
 export INFERENCE_PORT=8000
 export INFERENCE_MODEL=meta-llama/Llama-3.2-3B-Instruct
 HF_TOKEN=XXxxxxxxxxx
@@ -13,7 +9,6 @@ podman run --rm -d \
     --name vllm \
     --device nvidia.com/gpu=all \
     -v $HOME/.cache/huggingface:/root/.cache/huggingface \
-    -v $(pwd)/tool_chat_template_llama3.1_json.jinja:/root/tool_chat_template_llama3.1_json.jinja \
     --env "HUGGING_FACE_HUB_TOKEN=$HF_TOKEN" \
     -p $INFERENCE_PORT:$INFERENCE_PORT \
     --network=host \
@@ -26,7 +21,7 @@ podman run --rm -d \
     --collect-detailed-traces all \
     --enable-auto-tool-choice \
     --tool-call-parser llama3_json \
-    --chat-template /root/tool_chat_template_llama3.1_json.jinja \
+    --chat-template /workspace/vllm/examples/tool_chat_template_llama3.2_json.jinja \
     --port $INFERENCE_PORT
 
 # quay.io/sallyom/vllm:otlp is built from ./Containerfile  
