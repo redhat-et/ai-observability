@@ -155,7 +155,7 @@ Then navigate to **Configuration → Data Sources → Add data source**, and:
 * Set the URL to:
 
   ```
-  http://tempo:3100
+  http://tempo:3200
   ```
 * Click **Save & Test**
 
