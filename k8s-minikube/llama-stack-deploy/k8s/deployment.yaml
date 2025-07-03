@@ -27,7 +27,7 @@ spec:
           name: http
         env:
         - name: VLLM_URL
-          value: "http://llm-d-inference-gateway.llm-d.svc.cluster.local:80/v1"
+          value: "http://llm-d-inference-gateway-istio.llm-d.svc.cluster.local:80/v1"
         - name: INFERENCE_MODEL
           value: "meta-llama/Llama-3.2-3B-Instruct"  # Update this to your model
         - name: VLLM_MAX_TOKENS
@@ -35,11 +35,11 @@ spec:
         - name: VLLM_API_TOKEN
           value: "fake"
         - name: VLLM_TLS_VERIFY
-          value: "false"
+          value: "true"
         - name: TELEMETRY_SINKS
           value: "console,sqlite,otel_trace"
         - name: OTEL_TRACE_ENDPOINT
-          value: "http://localhost:4318/v1/traces"
+          value: "http://127.0.0.1:4318/v1/traces"
           #value: "http://tracing-collector-collector.llm-d-monitoring.svc.cluster.local:4318/v1/traces"
         - name: OTEL_SERVICE_NAME
           value: "llama-stack"

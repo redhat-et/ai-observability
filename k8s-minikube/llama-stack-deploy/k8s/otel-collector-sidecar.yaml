@@ -1,32 +1,36 @@
-# Once this exists, any pod with the template.metadata.annotation below will send metrics
-# sidecar.opentelemetry.io/inject: llamastack-otelsidecar
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: llamastack-otelsidecar
+  namespace: llama-stack
 spec:
-  mode: sidecar
+  args:
+    feature-gates: -component.UseLocalHostAsDefaultHost
   config:
     exporters:
-      debug: {}
-      otlp/tempo:
-        endpoint: http://tempo.llm-d-monitoring.svc.cluster.local:4317 # <- Update llm-d-monitoring to the ns running tempo if different
+      debug:
+        verbosity: detailed
+      otlp/tracing:
+        endpoint: http://tempo.tracing.svc.cluster.local:4317
         tls:
           insecure: true
+    processors:
+      batch: {}
     receivers:
       otlp:
         protocols:
-          grpc: {}
-          http: {}
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
     service:
       pipelines:
         traces:
           exporters:
-            - debug
-            - otlp/tempo
+          - debug
+          - otlp/tracing
+          processors:
+          - batch
           receivers:
-            - otlp
-        traces:
-          receivers: [otlp]
-          processors: [batch]
-          exporters: [logging, otlp/tempo]
+          - otlp
+  mode: sidecar
