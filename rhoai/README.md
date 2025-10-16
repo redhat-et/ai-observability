@@ -113,7 +113,7 @@ To create the `UIPlugin for Distributed Tracing`, first ensure the TempoStack de
 the OpenShift console at `Observe -> Traces` is to create the following [Tracing UIPlugin resource](./tracing-ui-plugin.yaml).
 
 ```bash
-oc apply ./tracing-ui-plugin.yaml
+oc apply -f ./tracing-ui-plugin.yaml
 ```
 
 You should now see traces and metrics in the OpenShift console, from the `Oberve` tab.
