@@ -101,9 +101,6 @@ spec:
           processors:
           - batch
           - memory_limiter
-      telemetry:
-        metrics:
-          address: 0.0.0.0:8888
   ingress:
     route:
       termination: passthrough
