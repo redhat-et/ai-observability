@@ -1,0 +1,16 @@
+# Langfuse Deployment - Ignore Sensitive Files
+
+# Credentials
+langfuse-credentials.env
+*.env
+*.env.*
+
+# Backups
+*.sql
+*.dump
+backup/
+backups/
+
+# Kubernetes secrets
+*secret*.yaml
+*secret*.yml
