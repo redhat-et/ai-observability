@@ -5,4 +5,5 @@ namespace: observability-hub
 resources:
 - sa.yaml
 - clusterrole.yaml
-- otel-collector.yaml
+#- otel-collector.yaml
+- otel-collector-llmd.yaml

@@ -1,0 +1,72 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: llm-d-collector
+spec:
+  serviceAccount: otel-collector
+  config:
+    extensions:
+      bearertokenauth:
+        filename: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+
+    exporters:
+      debug:
+        verbosity: basic
+      # Export the dev tenant traces to a Tempo instance
+      otlphttp/dev:
+        endpoint: https://tempo-tempostack-gateway.observability-hub.svc.cluster.local:8080/api/traces/v1/dev
+        tls:
+          insecure: false
+          ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+        auth:
+          authenticator: bearertokenauth
+        headers:
+          X-Scope-OrgID: "dev"
+    processors:
+      batch:
+        send_batch_max_size: 2048
+        send_batch_size: 1024
+        timeout: 1s
+      filter:
+        traces:
+          span:
+          - attributes["http.route"] == "/metrics"
+          - attributes["http.target"] == "/metrics"
+          - attributes["http.url"] == "/metrics"
+          - name == "GET /metrics"
+          - attributes["url.path"] == "/metrics"
+          - name == "GET"
+      filter/drop-metrics:
+        error_mode: ignore
+        traces:
+          span:
+          - attributes["url.path"] == "/metrics"
+          - name == "GET /metrics"
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+
+    service:
+      extensions:
+      - bearertokenauth
+      pipelines:
+        traces:
+          exporters:
+          - debug
+          - otlphttp/dev
+          processors:
+          - filter/drop-metrics
+          - batch
+          receivers:
+          - otlp
+  ingress:
+    route:
+      termination: passthrough
+    type: route
+  mode: deployment
+  observability:
+    metrics:
+      enableMetrics: true
+  upgradeStrategy: automatic
